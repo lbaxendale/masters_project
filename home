@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>nutrifem</title>
+</head>
+<body>
+    <h1>nutrition tailored for you</h1>
+
+<nav>
+    <a href="/about" class="nav-button">about</a>
+    <a href="/login" class="nav-button">login</a> |
+    <a href="/registration" class="nav-button">register</a>
+</nav>
+
+  <p>know how to nourish your body during your cycle</p>
+  <figure>
+    <img src="{{ url_for('static', filename='images/fruits.png') }}" alt="fruit" width="320">
+    <figcaption>personalised nutrition at any time</figcaption>
+  </figure>
+</body>
+</html>
