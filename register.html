@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=""width=device-width, initial-scale="1.0">
+    <title>nutrifem</title>
+    <link rel="stylesheet" href="register_style.css">
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="menu-icon" onclick="openNav()">&#9776;</div>
+
+    <div class="logo">
+      <span class="flower-icon">&#10048;</span> nutrifem </div>
+      
+    <a href="login.html" class="btn btn-login">Login</a>
+  </header>
+
+  <!--To trigger the menu-->
+  <div id="sideMenu" class="sidebar">
+    <!-- Adding close button inside the menu-->
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!--Links on the menu-->
+    <a href="home.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="login.html">Login</a>
+    <a href="register.html" class="active">Register</a>
+  </div>
+
+  <hr class="nav-divider">
+
+  <main class="login-wrapper">
+    <div class="login-container">
+      <h1>Register</h1>
+
+      <div class="login-links" style="margin-top: -20px; margin-bottom: 25px;">
+        <a href="login.html">Already a user? Login</a>
+      </div>
+
+      <form class="login-form">
+        <div class="form-group"> 
+          <label for="first-name">First Name</label>
+          <input type="text" id="first-name" name="first-name" required>
+        </div>
+
+        <div class="form-group"> 
+          <label for="surname">Surname</label>
+          <input type="text" id="surname" name="surname" required>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Re-enter password</label>
+          <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Submit</button>
+      </form>
+    </div>
+  </main>
+    
+  <!--JavaScript for menu sidebar-->
+  <script>
+    /*Opening the menu by changing the width to 250px */
+    function openNav() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+
+    /*Closing the menu by changing the width back to 0 */
+    function closeNav() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+  </script> 
+</body>
+</html>
