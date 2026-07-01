@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content=""width=device-width, initial-scale="1.0">
     <title>nutrifem</title>
-    <link rel="stylesheet" href="about_style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home_style.css') }}">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     <div class="logo">
       <span class="flower-icon">&#10048;</span> nutrifem </div>
       
-    <a href="#" class="btn btn-login">Login</a>
+    <a href="/login" class="btn btn-login">Login</a>
   </header>
 
   <!--To trigger the menu-->
@@ -22,29 +22,33 @@
     <!-- Adding close button inside the menu-->
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
-    <a href="home.html">Home</a>
-    <a href="about.html" class="active">About</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
+    <a href="/" class="active">Home</a>
+    <a href="/about">About</a>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
   </div>
 
   <hr class="nav-divider">
 
   <main class="container">
     <div class="hero-headings">
-      <h1>About</h1>
+      <h1>Know how to nourish your body during your cycle</h1>
+      <h2>nutrition tailored for you</h2>
     </div>
     
     <div class="hero-content">
       <div class="hero-image">
-        <img src="nutrition.jpg" alt="Nutrition">
+        <img src="{{ url_for('static', filename='images/woman_eating.jpg') }}" alt="Woman eating almonds">
       </div>
 
       <div class="hero-text">
-        <p>Nutrifem was created to support women's hormonal and menstrual help through nutritional therapy, including women with PCOS who may suffer from various health issues such as hormonal imbalance, insulin resistance, and high blood pressure.</p>
+        <p>Nutrifem is a nutrition reccomendation application that provides tailored recommendations based on information about your cycle, bio markers, and health symptoms.</p>
         <p>Nutritional therapy can assist with health issues such as:</p>
-        <h2>How does Nutrifem work?</h2>
-        <p>Nutrition recommendations are based on nutritional, clinical, and academic literature in combination with machine learning. *PLEASE NOTE: Recommendations provided are not medical advice. Consult a licensed health professional for treatement of health conditions.</p>
+        <ul>
+          <li>PCOS management</li>
+          <li>Weight management</li>
+          <li>Insulin resistant management</li>
+        </ul>
         <a href ="#" class="btn btn-learn">Learn More</a>
       </div>
     </div>
