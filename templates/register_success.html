@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content=""width=device-width, initial-scale="1.0">
     <title>nutrifem</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/success_style.css') }}">
 </head>
 
 <body>
@@ -23,36 +23,38 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
     <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/login" class="active">Login</a>
+    <a href="/about" class="active">About</a>
+    <a href="/login">Login</a>
     <a href="/register">Register</a>
   </div>
 
   <hr class="nav-divider">
 
-  <main class="login-wrapper">
-    <div class="login-container">
-      <h1>Login</h1>
+  <main class="container">
+    <div class="hero-headings">
+      <h1>About</h1>
+    </div>
+    
+    <div class="hero-content">
+    <div class="flash-message">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash">
+            {% for category, message in messages %}
+                <li class="flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
 
-      <form class="login-form">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="text" id="email" name="email" required>
-        </div>
+        {% block content %}{% endblock %}
+    </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required>
-        </div>
-
-        <div class="login-links">
-          <a href="#">Forgotten password?</a>
-          <a href="#">New here? Register</a>
-        </div>
-      </form>
+    <h1>Registration Successful!</h1>
+    <p>Thank you for submitting the form. <a href="{{ url_for('login') }}"> Login here. </a></p>
     </div>
   </main>
-    
+
   <!--JavaScript for menu sidebar-->
   <script>
     /*Opening the menu by changing the width to 250px */
