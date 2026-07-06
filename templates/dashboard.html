@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=""width=device-width, initial-scale="1.0">
+    <title>nutrifem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="menu-icon" onclick="openNav()">&#9776;</div>
+    <div class="logo">
+      <span class="flower-icon">&#10048;</span> nutrifem
+    </div>
+
+    <div class="user-profile">
+        <span class="greeting">Hello, User</span>
+        <span class="user-icon">&#128100;</span>
+    </div>     
+  </header>
+
+  <!--To trigger the menu-->
+  <div id="sideMenu" class="sidebar">
+    <!-- Adding close button inside the menu-->
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!--Links on the menu-->
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/login">Logout</a>
+  </div>
+
+  <hr class="nav-divider">
+
+  <main class="dashboard-wrapper">
+    <div class="dashboard-content">
+        <h1>Dashboard</h1>
+        <a href="/recommendations" class="btn btn-recommendations">See my recommendations</a>
+    </div>
+  </main>
+
+  <!--JavaScript for menu sidebar-->
+  <script>
+    /*Opening the menu by changing the width to 250px */
+    function openNav() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+
+    /*Closing the menu by changing the width back to 0 */
+    function closeNav() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+  </script> 
+</body>
+</html>
