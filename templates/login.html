@@ -30,11 +30,27 @@
 
   <hr class="nav-divider">
 
+    <!--Flash messages to show any errors in input validation -->
+<div class="flash-message">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+
   <main class="login-wrapper">
     <div class="login-container">
       <h1>Login</h1>
 
-      <form class="login-form" action="/dashboard">
+      <form class="login-form" method="POST" action="{{ url_for('login') }}" autocomplete="off">
         <div class="form-group">
           <label for="email">Email</label>
           <input 
@@ -56,7 +72,7 @@
 
         <div class="login-links">
           <a href="#">Forgotten password?</a>
-          <a href="#">New here? Register</a>
+          <a href="{{ url_for('register') }}">New here? Register</a>
         </div>
       </form>
     </div>
