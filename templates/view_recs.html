@@ -38,7 +38,38 @@
         <h1>Top 10 Recommendations</h1>
         <p>Based on your wellness profile, here are your optimal whole food matches:</p>
 
-        <table class=""
+        <table class="recs_table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+          <thead>
+            <tr style="background-color: #f4e8c1; text-align: left;">
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">#</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">Food Description</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">Match Score</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">Fiber (g)</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">PUFA (g)</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">Magnesium (g)</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">Zinc (g)</th>
+              <th style="padding: 12px; border-bottom: 2px solid #ddd">Vitamin D (mcg)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for food in recommendations %}
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 10px;">{{ loop.index }}</td>
+              <td style="padding: 10px; font-weight: bold;">{{ food.food_description }}</td>
+              <td style="padding: 10px; color: #2e7d32; font-weight: bold;">{{ food.Match_Score }}%</td>
+              <td style="padding: 10px;">{{ food.fiber_g | round(1) }}</td>
+              <td style="padding: 10px;">{{ food.pufa_g | round(1) }}</td>
+              <td style="padding: 10px;">{{ food.magnesium_mg | round(1) }}</td>
+              <td style="padding: 10px;">{{ food.zinc_mg | round(1) }}</td>
+              <td style="padding: 10px;">{{ food.vitamin_d_mcg | round(1) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="8" style="padding: 20px; text-align: center;">No recommendations available right now.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
     </div>
   </main>
 
