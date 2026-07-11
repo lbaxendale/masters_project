@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=""width=device-width, initial-scale="1.0">
+    <title>nutrifem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register_style.css') }}">
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="menu-icon" onclick="openNav()">&#9776;</div>
+
+    <div class="logo">
+      <span class="flower-icon">&#10048;</span> nutrifem </div>
+      
+    <a href="/login" class="btn btn-login">Login</a>
+  </header>
+
+  <!--To trigger the menu-->
+  <div id="sideMenu" class="sidebar">
+    <!-- Adding close button inside the menu-->
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!--Links on the menu-->
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/login">Login</a>
+    <a href="/register" class="active">Register</a>
+  </div>
+
+  <hr class="nav-divider">
+
+  <main class="login-wrapper">
+    <div class="login-container">
+      <h1>Questionnaire</h1>
+
+      <form class="login-form", method="post", action="/questionnaire">
+        <div class="form-group"> 
+          <label for="age">Age</label>
+          <input 
+            type="number" 
+            id="age" 
+            name="age"
+            min="18"
+            max="120"
+            title="Please enter your age." 
+            required>
+        </div>
+
+        <div class="form-group"> 
+          <label for="height">Height (cm)</label>
+          <input 
+            type="number" 
+            id="height" 
+            name="height"
+            min="120"
+            max="220"
+            title="Please enter your height." 
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="cycle_length">Average Length of Menstrual Cycle (days)</label>
+          <input 
+            type="number" 
+            id="cycle_length" 
+            name="cycle_length"
+            min="10"
+            max="60"
+            title="Please enter the average length of your menstrual cycle." 
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="menstrual_irregularity">Do you have irregular menstrual cycles?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+        
+        <div class="form-group">
+          <label for="sugar_intake">What is your average sugar intake level?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">What is your physical activity level?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">What acne severity level do you experience?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Do you have alopecia?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Do you have skin darkening acanthosis?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+        
+        <div class="form-group">
+          <label for="pcos_diagnosis">Do you have hirsutism?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">What is your Ferriman-Gallwey Hirsutism score?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">What is your Ferriman-Gallwey Hirsutism score?</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+        
+        <p>If you can also provide the following data it can support your recommendations.</p>
+        <p>If you do not have this data, you can leave the fields blank.</p>
+        
+        <div class="form-group">
+          <label for="pcos_diagnosis">Last Recorded Luteneizing Hormone (LH) Level (mIU/mL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Last Recorded Follicle-Stimulating Hormone (FSH) Level (mIU/mL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Fasting Glucose Level (mg/dL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Fasting Insulin Level (uIU/dL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Total Testosterone (ng/dL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Free Testosterone (pg/dL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Total Cholesterol (mg/dL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <div class="form-group">
+          <label for="pcos_diagnosis">Total Triglycerides (mg/dL)</label>
+          <input type="radio" id="yes" name="yes" value="Yes">
+          <input type="radio" id="no" name="no" value="No" checked>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Submit</button>
+      </form>
+    </div>
+  </main>
+    
+  <!--JavaScript for menu sidebar-->
+  <script>
+    /*Opening the menu by changing the width to 250px */
+    function openNav() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+
+    /*Closing the menu by changing the width back to 0 */
+    function closeNav() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+  </script> 
+</body>
+</html>
