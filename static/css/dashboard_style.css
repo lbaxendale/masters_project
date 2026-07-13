@@ -217,3 +217,22 @@ body {
     color: #eb7175;
     transform: translateY(-2px);
 }
+
+.flash-message {
+    text-align: center; /*align flash messages in center*/
+}
+
+.flash {
+    list-style: none; /*to remove bullet points*/
+    padding: 0;
+    margin: 0;
+}
+
+.flash li {
+    color: red; /*flash message text red*/
+    font-weight: bold; /*making text bold*/
+}
+
+.error {
+    color: red;
+}
