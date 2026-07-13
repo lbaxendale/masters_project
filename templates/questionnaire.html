@@ -59,6 +59,18 @@
             required>
         </div>
 
+        <div class="form-group"> 
+          <label for="weight">Weight (kg)</label>
+          <input 
+            type="number" 
+            id="weight" 
+            name="weight"
+            min="20"
+            max="200"
+            title="Please enter your weight." 
+            required>
+        </div>
+
         <div class="form-group">
           <label for="cycle_length">Average Length of Menstrual Cycle (days)</label>
           <input 
@@ -73,107 +85,177 @@
 
         <div class="form-group">
           <label for="menstrual_irregularity">Do you have irregular menstrual cycles?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+
+          <input type="radio" id="yes" name="menstrual_irregularity" value="Yes">
+          <label for="yes">Yes</label>
+
+          <input type="radio" id="no" name="menstrual_irregularity" value="No" checked>
+          <label for="no">No</label>
+
         </div>
         
         <div class="form-group">
           <label for="sugar_intake">What is your average sugar intake level?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <input 
+            type="number" 
+            id="sugar_intake" 
+            name="sugar_intake"
+            min="1"
+            max="3"
+            title="Please enter your average sugar intake level." 
+            required>
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">What is your physical activity level?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="physical_activity">What is your physical activity level?</label>
+          <input 
+            type="number" 
+            id="physical_activity" 
+            name="physical_activity"
+            min="1"
+            max="3"
+            title="Please enter your physical activity level." 
+            required>
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">What acne severity level do you experience?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="acne_severity">What acne severity level do you experience?</label>
+          <input 
+            type="number" 
+            id="acne_severity" 
+            name="acne_severity"
+            min="0"
+            max="3"
+            title="Please enter your acne severity level." 
+            required>
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Do you have alopecia?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="alopecia">Do you have alopecia?</label>
+
+          <input type="radio" id="yes" name="alopecia" value="Yes">
+          <label for="yes">Yes</label>
+
+          <input type="radio" id="no" name="alopecia" value="No" checked>
+          <label for="no">No</label>
+
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Do you have skin darkening acanthosis?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="acanthosis">Do you have skin darkening acanthosis?</label>
+
+          <input type="radio" id="yes" name="acanthosis" value="Yes">
+          <label for="yes">Yes</label>
+
+          <input type="radio" id="no" name="acanthosis" value="No" checked>
+          <label for="no">No</label>
+
         </div>
         
         <div class="form-group">
-          <label for="pcos_diagnosis">Do you have hirsutism?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="hirsutism">Do you have hirsutism?</label>
+
+          <input type="radio" id="yes" name="hirsutism" value="Yes">
+          <label for="yes">Yes</label>
+
+          <input type="radio" id="no" name="hirsutism" value="No" checked>
+          <label for="no">No</label>
+
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">What is your Ferriman-Gallwey Hirsutism score?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="fg_score">What is your Ferriman-Gallwey Hirsutism score?</label>
+          <input 
+            type="number" 
+            id="fg_score" 
+            name="fg_score"
+            min="0"
+            max="24"
+            title="Please enter your Ferriman-Gallwey Hirsutism score." 
+            required>
         </div>
 
-        <div class="form-group">
-          <label for="pcos_diagnosis">What is your Ferriman-Gallwey Hirsutism score?</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
-        </div>
-        
         <p>If you can also provide the following data it can support your recommendations.</p>
         <p>If you do not have this data, you can leave the fields blank.</p>
         
         <div class="form-group">
-          <label for="pcos_diagnosis">Last Recorded Luteneizing Hormone (LH) Level (mIU/mL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="lh_level">Last Recorded Luteneizing Hormone (LH) Level (mIU/mL)</label>
+          <input 
+            type="number" 
+            id="lh_level" 
+            name="lh_level"
+            min="1"
+            max="30">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Last Recorded Follicle-Stimulating Hormone (FSH) Level (mIU/mL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="fsh_level">Last Recorded Follicle-Stimulating Hormone (FSH) Level (mIU/mL)</label>
+          <input 
+            type="number" 
+            id="fsh_level" 
+            name="fsh_level"
+            min="1"
+            max="30">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Fasting Glucose Level (mg/dL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="glucose_level">Fasting Glucose Level (mg/dL)</label>
+          <input 
+            type="number" 
+            id="glucose_level" 
+            name="glucose_level"
+            min="30"
+            max="150">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Fasting Insulin Level (uIU/dL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="insulin_level">Fasting Insulin Level (uIU/dL)</label>
+          <input 
+            type="number" 
+            id="insulin_level" 
+            name="insulin_level"
+            min="1"
+            max="40">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Total Testosterone (ng/dL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="total_tes">Total Testosterone (ng/dL)</label>
+          <input 
+            type="number" 
+            id="total_tes" 
+            name="total_tes"
+            min="1"
+            max="120">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Free Testosterone (pg/dL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="free_tes">Free Testosterone (pg/dL)</label>
+          <input 
+            type="number" 
+            id="free_tes" 
+            name="free_tes"
+            min="1"
+            max="20">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Total Cholesterol (mg/dL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="cholesterol">Total Cholesterol (mg/dL)</label>
+          <input 
+            type="number" 
+            id="cholesterol" 
+            name="cholesterol"
+            min="90"
+            max="350">
         </div>
 
         <div class="form-group">
-          <label for="pcos_diagnosis">Total Triglycerides (mg/dL)</label>
-          <input type="radio" id="yes" name="yes" value="Yes">
-          <input type="radio" id="no" name="no" value="No" checked>
+          <label for="triglycerides">Total Triglycerides (mg/dL)</label>
+          <input 
+            type="number" 
+            id="triglycerides" 
+            name="triglycerides"
+            min="90"
+            max="350">
         </div>
 
         <button type="submit" class="btn btn-submit">Submit</button>
