@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 from faker import Faker
 import pandas as pd
 import matplotlib.pyplot as plt
+from werkzeug.security import generate_password_hash, check_password_hash 
 import seaborn as sns
 import numpy as np
 import string
@@ -86,7 +87,6 @@ def nutrient_vector_2(patient_record):
     #Round the nutrient figures
     return [round(fibre, 1), round(PUFA, 1), round(magnesium, 1), round(vitamin_d, 1), round(zinc, 1)]
 
-
 # -------------------------------------------------------------------
 #Defining a function that creates nutrition vectors for the patients in csv file
 #This is for the existing patients in the csv file only, not new patients
@@ -101,6 +101,27 @@ def patient_data_with_vectors(csv_file, output_csv):
     #Save nutrient vector data to a new file
     df.to_csv(output_csv, index=False)
 
+patient_data_with_vectors('cleandata.csv', 'patientdata.csv')
+
+def hash_and_populate(csv_path, db_path="patientdb.db"):
+    #reading the csv
+    df = pd.read_csv(csv_path)
+
+    #Hashing the passwords
+    if 'password' in df.columns:
+        df['password'] = df['password'].apply(
+            lambda x: generate_password_hash(str(x), method="pbkdf2:sha256")
+        )
+    else:
+        print("Error: 'password' column not found in CSV.")
+        return
+    
+    #Populating the database
+    conn = sqlite3.connect(db_path)
+    #Ensuring the table is created new each time
+    df.to_sql('patientdata', conn, if_exists='replace', index=False)
+    conn.commit()
+    conn.close()
 
 # -------------------------------------------------------------------
 #Creating the food database with the 5 target nutrients

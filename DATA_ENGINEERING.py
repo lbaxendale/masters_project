@@ -84,9 +84,6 @@ def process_raw_file():
     #HOMA IR Formula
     df2['HOMA_IR'] = (df2['Fasting_Insulin_uIU_mL'] * df2['Fasting_Glucose_mg_dL']) / 405
 
-    #Saving the cleaned dataset to a new file
-    df2.to_excel('cleandata.xlsx', index=False)
-
     ##Assigning Fake First Name, Surname, Emails, and Passwords to Excel file data for Testing
     fake = Faker()
 
