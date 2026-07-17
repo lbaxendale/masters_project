@@ -1,7 +1,6 @@
 #Nutrition Recommender Code Logic for Application
 
 #Importing essential libraries
-#Importing essential libraries
 from openpyxl import load_workbook
 from faker import Faker
 import pandas as pd
@@ -11,6 +10,10 @@ import numpy as np
 import string
 import random
 import csv
+
+import sqlite3
+import ast
+import json
 
 #Libraries for machine learning
 from sklearn.model_selection import train_test_split
@@ -98,17 +101,14 @@ def patient_data_with_vectors(csv_file, output_csv):
     #Save nutrient vector data to a new file
     df.to_csv(output_csv, index=False)
 
-# -------------------------------------------------------------------
-#Generating the nutrition vector for new users 
-def new_user_nutrition_vector():
-    
 
 # -------------------------------------------------------------------
+#Creating the food database with the 5 target nutrients
 #Target nutrients matching to nutrients names in the USDA Nutrition/Food datasets
 
 #Loading the nutrition datasets
 df_food = pd.read_csv('food.csv')
-df_food_nutrient = pd.read_csv('food_nutrient.csv')
+df_food_nutrient = pd.read_csv('food_nutrient.csv', low_memory=False)
 df_nutrient = pd.read_csv('nutrient.csv')
 
 #Seperating the target nutrients using the USDA nutrient ids
@@ -150,4 +150,70 @@ food_matrix_scaled_2 = scaler_2.fit_transform(food_matrix_5d)
 food_scaled_2 = pd.DataFrame(food_matrix_scaled_2, columns=food_matrix_5d.columns, index=food_matrix_5d.index)
 
 food_matrix_5d.to_csv("food_matrix_5d.csv", index=False)
+
+
+# -------------------------------------------------------------------
+def save_food_to_db(db_path="patientdb.db"):
+
+    #Food matrix created with 5 nutrient vectors
+    food_df = pd.read_csv("food_matrix_5d.csv")
+    conn = sqlite3.connect(db_path)
+
+    #Store the food data into the database
+    food_df.to_sql("food_matrix_5d", conn, if_exists="replace", index=False)
+    conn.close()
+
+def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
+    conn = sqlite3.connect(db_path)
+
+    #Retrieving user vector
+    cursor = conn.cursor()
+    cursor.execute("SELECT Target_Nutrition_Vector FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
+    row = cursor.fetchone()
+    if not row or not row[0]:
+        conn.close()
+        return None
+    
+    patient_vector = json.loads(row[0])
+
+    #Retrieving the names of foods to attach them to the matrix
+    #Loading the saved food_matrix_5d table 
+    food_df = pd.read_sql_query("SELECT * FROM food_matrix_5d", conn)
+
+    #Renaming the Raw DQL nutrient column names
+    food_df = food_df.rename(columns={
+        "Fiber, total dietary": 'fiber_g',
+        "Fatty acids, total polyunsaturated": 'pufa_g',
+        "Magnesium, Mg": 'magnesium_mg',
+        "Vitamin_D_Total_UG": 'vitamin_d_mcg',
+        "Zinc, Zn": 'zinc_mg'
+    })
+
+    #Retrieving the names of foods to attach them to the matrix
+    names_df = pd.read_sql_query("SELECT description AS food_description FROM food", conn)
+    food_df['food_description'] = names_df['food_description']
+
+    conn.close()
+
+    #Isolating the 5 nutrients in the vector
+    #For scaling
+    nutrient_cols = ['fiber_g', 'pufa_g', 'magnesium_mg', 'vitamin_d_mcg', 'zinc_mg']
+    
+    #Mapping the nutrient values to the food matrix
+    food_matrix = food_df[nutrient_cols].values
+    patient_matrix = np.array(patient_vector).reshape(1, -1)
+
+    #Scaling the nutrients
+    scaler = MinMaxScaler()
+    scaled_foods = scaler.fit_transform(food_matrix)
+    scaled_patient = scaler.transform(patient_matrix)
+
+    #Running the cosine similarity engine 
+    similarity_scores = cosine_similarity(scaled_patient, scaled_foods)[0]
+    food_results_df = food_df.copy()
+    food_results_df['Match_Score'] = np.round(similarity_scores * 100, 1)
+
+    #Returning the top N items as a list of dictionaries for Jinja2 HTML rendering
+    top_foods = food_results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
+    return top_foods.to_dict(orient='records')
 

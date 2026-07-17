@@ -1,5 +1,3 @@
-# Database creation for application
-
 #Importing Libraries
 from flask import Flask, render_template, request, redirect, url_for, flash, session, redirect
 import logging, re, os
@@ -25,20 +23,10 @@ from DATA_ENGINEERING import process_raw_file
 from RECOMMENDER_LOGIC import patient_data_with_vectors
 from RECOMMENDER_LOGIC import save_food_to_db
 
-#Set Seed
-SEED_VAL = 55
-random.seed(SEED_VAL)
-np.random.seed(SEED_VAL)
-
-#Run code to process raw excel file data
-process_raw_file() #Creates the cleandata.csv file
-patient_data_with_vectors('cleandata.csv', 'patientdata.csv')
-
 # Database paths
-DB_PATH = "patientdb.db"
+DB_PATH = "users.db"
 CSV_PATH = "patientdata.csv"
 
-# ------------------------------------
 #Creating patient table if they don't exist
 def init_db(CSV_PATH):
     conn = sqlite3.connect(DB_PATH)
@@ -129,8 +117,4 @@ def init_db(CSV_PATH):
                     ))
         conn.commit()
         conn.close()
-
-# ------------------------------------
-save_food_to_db()
-
 
