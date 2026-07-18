@@ -11,10 +11,12 @@ import numpy as np
 import string
 import random
 import csv
+import bcrypt
 
 import sqlite3
 import ast
 import json
+import os
 
 #Libraries for machine learning
 from sklearn.model_selection import train_test_split
@@ -87,41 +89,20 @@ def nutrient_vector_2(patient_record):
     #Round the nutrient figures
     return [round(fibre, 1), round(PUFA, 1), round(magnesium, 1), round(vitamin_d, 1), round(zinc, 1)]
 
+
 # -------------------------------------------------------------------
-#Defining a function that creates nutrition vectors for the patients in csv file
-#This is for the existing patients in the csv file only, not new patients
-def patient_data_with_vectors(csv_file, output_csv):
+#Hashing the passwords in the csv file and populating it 
+def populate_db(db_path="patientdb.db"):
 
-    #Reading the csv file without nutrition vector
-    df = pd.read_csv(csv_file)
-
-    #Running the nutrient vector logic across all rows in the PCOS dataset
-    df['Target_Nutrient_Vector'] = df.apply(nutrient_vector_2, axis=1)
-
-    #Save nutrient vector data to a new file
-    df.to_csv(output_csv, index=False)
-
-patient_data_with_vectors('cleandata.csv', 'patientdata.csv')
-
-def hash_and_populate(csv_path, db_path="patientdb.db"):
-    #reading the csv
-    df = pd.read_csv(csv_path)
-
-    #Hashing the passwords
-    if 'password' in df.columns:
-        df['password'] = df['password'].apply(
-            lambda x: generate_password_hash(str(x), method="pbkdf2:sha256")
-        )
-    else:
-        print("Error: 'password' column not found in CSV.")
-        return
-    
-    #Populating the database
+    #Patient data with hashed passwords
+    patient_df = pd.read_csv("patientdata.csv")
     conn = sqlite3.connect(db_path)
+
+    #Populating the database
     #Ensuring the table is created new each time
-    df.to_sql('patientdata', conn, if_exists='replace', index=False)
-    conn.commit()
+    patient_df.to_sql('patientdata', conn, if_exists='replace', index=False)
     conn.close()
+
 
 # -------------------------------------------------------------------
 #Creating the food database with the 5 target nutrients
@@ -178,10 +159,17 @@ def save_food_to_db(db_path="patientdb.db"):
 
     #Food matrix created with 5 nutrient vectors
     food_df = pd.read_csv("food_matrix_5d.csv")
+
+    #Food database containing names of foods
+    food_names = pd.read_csv("food.csv")
+
+    #Establish connection to db
     conn = sqlite3.connect(db_path)
 
-    #Store the food data into the database
+    #Store the food csv files into the database
     food_df.to_sql("food_matrix_5d", conn, if_exists="replace", index=False)
+    food_names.to_sql("food", conn, if_exists="replace", index=False)
+    
     conn.close()
 
 def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
@@ -189,7 +177,7 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
 
     #Retrieving user vector
     cursor = conn.cursor()
-    cursor.execute("SELECT Target_Nutrition_Vector FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
+    cursor.execute("SELECT Target_Nutrient_Vector FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
     row = cursor.fetchone()
     if not row or not row[0]:
         conn.close()
@@ -238,3 +226,10 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     top_foods = food_results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
     return top_foods.to_dict(orient='records')
 
+#df = pd.read_csv('patientdata.csv')
+
+def hash_password(password):
+    pwd_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(pwd_bytes, salt)
+    return hashed.decode('utf-8')

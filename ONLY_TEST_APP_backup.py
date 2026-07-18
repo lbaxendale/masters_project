@@ -47,7 +47,6 @@ app.secret_key = os.environ.get("SECRET_KEY", "ftgongvsbn7283")
 # ------------------------------------
 # Database paths
 DB_PATH = "patientdb.db"
-CSV_PATH = "cleandata.csv"
 # ------------------------------------
 
 # ------------------------------------
@@ -112,7 +111,7 @@ def login():
 
     #Querying the user table to find a user matching the email
     cursor.execute("""
-        SELECT first_name, last_name, email, password
+        SELECT first_name, last_name, email, hashed_password
         FROM patientdata
         WHERE lower(email) = lower(?)
     """, (email,))
@@ -358,7 +357,7 @@ def questionnaire():
                     WHERE email = ?
                  """, (
                     age, height, weight, bmi, cycle_length, 
-                    menstrual_irregularity, sugar_intake, physical_activity,
+                    menstrual_irregularity, pcos_diagnosis, sugar_intake, physical_activity,
                     acne_severity, alopecia, acanthosis, fg_score, 
                     lh_level, fsh_level, lh_fsh_ratio, glucose_level, 
                     insulin_level, homa_ir, total_tes, free_tes, 
@@ -384,4 +383,4 @@ def questionnaire():
 
 if __name__ == "__main__":
     init_db()
-    app.run(debug=False)  
+    app.run(debug=True)  

@@ -22,22 +22,27 @@ import random
 import csv
 
 from DATA_ENGINEERING import process_raw_file
-from RECOMMENDER_LOGIC import hash_and_populate, save_food_to_db
+from RECOMMENDER_LOGIC import populate_db, save_food_to_db
+
+#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#CLEAN_DATA_PATH = os.path.join(BASE_DIR, 'cleandata.csv')
+#PATIENT_DATA_PATH = os.path.join(BASE_DIR, 'patientdata.csv')
 
 #Set Seed
 SEED_VAL = 55
 random.seed(SEED_VAL)
 np.random.seed(SEED_VAL)
 
-DB_PATH = "patientdb.db"
-CSV_PATH = "cleandata.csv"
-
 #Run code to process raw excel file data
-process_raw_file() #Creates the cleandata.csv file
+#Patientdata.csv is patient data with nutrition vectors and hashed passwords
+#Patientdata_nohash.csv is the patient data with nutrition vectors and unhashed passwords
+process_raw_file() 
 
-#Populating the db with patient data that has encrypted passwords
-hash_and_populate("patientdata.csv")
+def init_db():
 
-save_food_to_db()
+    #Populating the db with patient data that has encrypted passwords
+    populate_db()
 
+    #Saving the food matrix to the database
+    save_food_to_db()
 
