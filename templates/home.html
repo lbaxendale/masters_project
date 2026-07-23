@@ -14,7 +14,7 @@
     <div class="logo">
       <span class="flower-icon">&#10048;</span> nutrifem </div>
       
-    <a href="/login" class="btn btn-login">Login</a>
+    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
   </header>
 
   <!--To trigger the menu-->
@@ -23,9 +23,9 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
     <a href="/" class="active">Home</a>
-    <a href="/about">About</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
   </div>
 
   <hr class="nav-divider">

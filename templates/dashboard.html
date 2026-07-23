@@ -25,10 +25,9 @@
     <!-- Adding close button inside the menu-->
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/dashboard">Dashboard</a>
-    <a href="/login">Logout</a>
+    <a href="{{ url_for('dashboard') }}" class="active">Dashboard</a>
+    <a href="#">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
 
   <hr class="nav-divider">
@@ -52,8 +51,8 @@
   <main class="dashboard-wrapper">
     <div class="dashboard-content">
         <h1>Dashboard</h1>
-        <a href="/view_recs" class="btn btn-recommendations">See my recommendations</a>
-        <a href="/questionnaire" class="btn btn-recommendations">Health Questionnaire</a>
+        <a href="{{ url_for('view_recs') }}" class="btn btn-recommendations">See my recommendations</a>
+        <a href="{{ url_for('questionnaire') }}" class="btn btn-recommendations">Health Questionnaire</a>
     </div>
   </main>
 

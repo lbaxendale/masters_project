@@ -10,11 +10,14 @@
 <body>
   <header class="navbar">
     <div class="menu-icon" onclick="openNav()">&#9776;</div>
-
     <div class="logo">
-      <span class="flower-icon">&#10048;</span> nutrifem </div>
-      
-    <a href="/login" class="btn btn-login">Login</a>
+      <span class="flower-icon">&#10048;</span> nutrifem
+    </div>
+
+    <div class="user-profile">
+        <span class="greeting">Hello, User</span>
+        <span class="user-icon">&#128100;</span>
+    </div>     
   </header>
 
   <!--To trigger the menu-->
@@ -22,10 +25,9 @@
     <!-- Adding close button inside the menu-->
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="#">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
 
   <hr class="nav-divider">
@@ -85,25 +87,20 @@
 
         <div class="form-group">
           <label for="menstrual_irregularity">Do you have irregular menstrual cycles?</label>
-
-          <input type="radio" id="yes" name="menstrual_irregularity" value="Yes">
-          <label for="yes">Yes</label>
-
-          <input type="radio" id="no" name="menstrual_irregularity" value="No" checked>
-          <label for="no">No</label>
+          <div class="radio-group">
+            <label><input type="radio" id="yes" name="menstrual_irregularity" value="Yes"> Yes</label>
+            <label><input type="radio" id="no" name="menstrual_irregularity" value="No" checked> No</label>
+          </div>
         </div>
         
         <div class="form-group">
           <label for="pcos_diagnosis">Do you have PCOS?</label>
-
-          <input type="radio" id="yes" name="pcos_diagnosis" value="Yes">
-          <label for="yes">Yes</label>
-
-          <input type="radio" id="no" name="pcos_diagnosis" value="No" checked>
-          <label for="no">No</label>
+          <div class="radio-group">
+            <label><input type="radio" id="yes" name="pcos_diagnosis" value="Yes"> Yes</label>
+            <label><input type="radio" id="no" name="pcos_diagnosis" value="No" checked> No</label>
+          </div>
         </div>
 
-        
         <div class="form-group">
           <label for="sugar_intake">What is your average sugar intake level?</label>
           <input 
@@ -142,35 +139,26 @@
 
         <div class="form-group">
           <label for="alopecia">Do you have alopecia?</label>
-
-          <input type="radio" id="yes" name="alopecia" value="Yes">
-          <label for="yes">Yes</label>
-
-          <input type="radio" id="no" name="alopecia" value="No" checked>
-          <label for="no">No</label>
-
+          <div class="radio-group">
+            <label><input type="radio" id="yes" name="alopecia" value="Yes"> Yes</label>
+            <label><input type="radio" id="no" name="alopecia" value="No" checked> No</label>
+          </div>
         </div>
 
         <div class="form-group">
           <label for="acanthosis">Do you have skin darkening acanthosis?</label>
-
-          <input type="radio" id="yes" name="acanthosis" value="Yes">
-          <label for="yes">Yes</label>
-
-          <input type="radio" id="no" name="acanthosis" value="No" checked>
-          <label for="no">No</label>
-
+          <div class="radio-group">
+            <label><input type="radio" id="yes" name="acanthosis" value="Yes"> Yes</label>
+            <label><input type="radio" id="no" name="acanthosis" value="No" checked> No</label>
+          </div>
         </div>
         
         <div class="form-group">
           <label for="hirsutism">Do you have hirsutism?</label>
-
-          <input type="radio" id="yes" name="hirsutism" value="Yes">
-          <label for="yes">Yes</label>
-
-          <input type="radio" id="no" name="hirsutism" value="No" checked>
-          <label for="no">No</label>
-
+          <div class="radio-group">
+            <label><input type="radio" id="yes" name="hirsutism" value="Yes"> Yes</label>
+            <label><input type="radio" id="no" name="hirsutism" value="No" checked> No</label>
+          </div>
         </div>
 
         <div class="form-group">

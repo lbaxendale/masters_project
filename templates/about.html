@@ -14,7 +14,7 @@
     <div class="logo">
       <span class="flower-icon">&#10048;</span> nutrifem </div>
       
-    <a href="/login" class="btn btn-login">Login</a>
+    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
   </header>
 
   <!--To trigger the menu-->
@@ -23,9 +23,9 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
     <a href="/">Home</a>
-    <a href="/about" class="active">About</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+    <a href="{{ url_for('about') }}" class="active">About</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
   </div>
 
   <hr class="nav-divider">
@@ -41,11 +41,18 @@
       </div>
 
       <div class="hero-text">
-        <p>Nutrifem was created to support women's hormonal and menstrual help through nutritional therapy, including women with PCOS who may suffer from various health issues such as hormonal imbalance, insulin resistance, and high blood pressure.</p>
-        <p>Nutritional therapy can assist with health issues such as:</p>
+        <p>Nutrifem was created to support women's hormonal and menstrual health through nutritional therapy, including women with PCOS who may suffer from various health issues such as hormonal imbalance, insulin resistance, and high blood pressure.</p>
         <h2>How does Nutrifem work?</h2>
         <p>Nutrition recommendations are based on nutritional, clinical, and academic literature in combination with machine learning. *PLEASE NOTE: Recommendations provided are not medical advice. Consult a licensed health professional for treatement of health conditions.</p>
-        <a href ="#" class="btn btn-learn">Learn More</a>
+
+        <!--Hidden text that will only appear when click the 'Learn More' button -->
+        <div id="extra-content" style="display: none;">
+          <p>Nutrifem serves as a wellness companion rather than a medical advice, recommending food based on a user questionnaire and educating them on the nutrients of foods. Simply answer a series of questions, and receive recommendations instantly.</p>
+        </div>
+        
+          <!-- Learn more button with an onclick toggle function -->
+        <button id="LearnMoreBtn" class="btn btn-learn" onclick="toggleExtraContent()">Learn More</button>
+
       </div>
     </div>
   </main>

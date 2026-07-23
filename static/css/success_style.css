@@ -92,9 +92,10 @@ body {
 
 .hero-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+    text-align: center;
+    gap: 20px;
     width: 100%;
 }
 

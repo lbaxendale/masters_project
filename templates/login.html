@@ -14,7 +14,7 @@
     <div class="logo">
       <span class="flower-icon">&#10048;</span> nutrifem </div>
       
-    <a href="/login" class="btn btn-login">Login</a>
+    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
   </header>
 
   <!--To trigger the menu-->
@@ -71,7 +71,6 @@
         <button type ="submit" class="btn btn-submit">Log in</button>
 
         <div class="login-links">
-          <a href="#">Forgotten password?</a>
           <a href="{{ url_for('register') }}">New here? Register</a>
         </div>
       </form>

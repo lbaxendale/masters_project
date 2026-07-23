@@ -190,6 +190,7 @@ body {
     align-items: center;
     text-align: center;
     gap: 30px;
+    margin-top: 40px; 
 }
 
 .dashboard-content h1 {

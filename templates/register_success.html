@@ -14,7 +14,7 @@
     <div class="logo">
       <span class="flower-icon">&#10048;</span> nutrifem </div>
       
-    <a href="/login" class="btn btn-login">Login</a>
+    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
   </header>
 
   <!--To trigger the menu-->
@@ -23,34 +23,34 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
     <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
   </div>
 
   <hr class="nav-divider">
 
   <main class="container">
     <div class="hero-headings">
-      <h1>About</h1>
+      <h1>Success</h1>
     </div>
     
     <div class="hero-content">
-    <div class="flash-message">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class="flash">
-            {% for category, message in messages %}
-                <li class="flash-{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
+      <!-- Flash messages -->
+      <div class="flash-message">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              <ul class="flash">
+              % for category, message in messages %}
+                  <li class="flash-{{ category }}">{{ message }}</li>
+              {% endfor %}
+              </ul>
+          {% endif %}
+          {% endwith %}
+      </div>
 
-        {% block content %}{% endblock %}
-    </div>
-
-    <h1>Registration Successful!</h1>
+      <!--Heading-->
+      <h1>Registration Successful!</h1>
     <p>Thank you for submitting the form. <a href="{{ url_for('login') }}"> Login here. </a></p>
     </div>
   </main>

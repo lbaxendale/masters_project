@@ -144,6 +144,13 @@ def dashboard():
         return redirect(url_for("login"))
     return render_template("dashboard.html")
 
+#Re routing user to login page when user logs out
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("You have been logged out.")
+    return redirect(url_for("login"))
+
 # Route for the register page
 @app.route('/register', methods =['GET', 'POST'])
 def register():

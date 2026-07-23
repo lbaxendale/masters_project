@@ -163,3 +163,13 @@ body {
     font-size: 40px;
     text-decoration: none;
 }
+
+/* Learn button with onclick toggle function */
+.btn-learn {
+    display: inline-block;
+    padding: 10px 40px;
+    font-size: 18px;
+    margin-top: 20px;
+    background: transparent;
+    cursor: pointer;
+}

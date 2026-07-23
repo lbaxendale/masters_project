@@ -25,10 +25,9 @@
     <!-- Adding close button inside the menu-->
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <!--Links on the menu-->
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/dashboard">Dashboard</a>
-    <a href="/login">Logout</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="#">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
 
   <hr class="nav-divider">

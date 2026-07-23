@@ -250,6 +250,7 @@ button.btn-submit {
     font-family: inherit;
 }
 
+/* Flash messages */
 .flash-message {
     text-align: center; /*align flash messages in center*/
 }
@@ -267,4 +268,21 @@ button.btn-submit {
 
 .error {
     color: red;
+}
+
+/* Radio button group */
+.radio-group {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    padding-left: 10px;
+    margin: 5px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    cursor: pointer;
 }
