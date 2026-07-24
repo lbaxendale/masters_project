@@ -175,6 +175,33 @@ def dashboard():
         return redirect(url_for("login"))
     return render_template("dashboard.html")
 
+# Route for the profile page
+@app.route("/profile")
+def profile():
+    if "ID" not in session: 
+        flash("Please log in to continue.")
+        return redirect(url_for("login"))
+
+    user_email = session["ID"]
+
+    #Connecting to the database to retrieve user details
+    conn= sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row #Accessing column names on rows
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
+    user_row = cursor.fetchone()
+    conn.close()
+
+    if not user_row:
+        flash("User details could not be found.")
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        'profile.html',
+        user=user_row,
+        user_name=session.get("username", "User")
+    )
+
 #Re routing user to login page when user logs out
 @app.route("/logout")
 def logout():
@@ -303,6 +330,72 @@ def view_recs():
         user_name=session.get("userFirstName", "User"),
         messages=personalised_messages
         )
+
+# Route for the update password page
+@app.route('/update_password', methods=['GET', 'POST'])
+def update_password():
+    if "ID" not in session:
+        flash("Please log in to continue.")
+        return redirect(url_for("login"))
+
+    user_email = session["ID"]
+
+    if request.method == "GET":
+        return render_template('update_password.html')
+
+    #Retrieving fields from the update password form
+    if request.method == 'POST':
+        current_password = (request.form.get("current_password") or "").strip()
+        new_password = (request.form.get("new_password") or "").strip()
+        confirm_password = (request.form.get("confirm_password") or "").strip()
+
+        #Checking for empty fields
+        if not (current_password and new_password and confirm_password):
+            flash("All fields are required.", "error")
+            return redirect(url_for("update_password"))
+
+        #Checking if the new passwords match
+        if new_password != confirm_password:
+            flash("New passwords do not match. Please try again.", "error")
+            return redirect(url_for("update_password"))
+
+        #Validate the new password complexity using the regex pattern
+        if not PASSWORD_PATTERN.fullmatch(new_password):
+            flash("Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and special character.")
+            return redirect(url_for("update_password"))
+
+        #Connecting to database to verify the current password
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("SELECT hashed_password FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
+        row = cursor.fetchone()
+
+        if not row or not row[0]:
+            conn.close()
+            flash("User record not found.", "error")
+            return redirect(url_for("login"))
+        stored_hash = row[0]
+
+        #Checking if the current password matches the stored hash
+        if not check_password_hash(stored_hash, current_password):
+            conn.close()
+            flash("Incorrect current password. Please try again.", "error")
+            return redirect(url_for("update_password"))
+
+        #Hashing the new password and updating it in the database
+        new_hashed_password = generate_password_hash(new_password, method="pbkdf2:sha256")
+
+        cursor.execute("""
+            UPDATE patientdata
+            SET hashed_password = ?
+            WHERE lower(email) = lower(?)
+        """,  (new_hashed_password, user_email))
+
+        conn.commit()
+        conn.close()
+
+        flash("Password updated successfully!", "success")
+        return redirect(url_for("profile"))
 
 # Route for the Questionnaire page
 @app.route('/questionnaire', methods=['GET', 'POST'])

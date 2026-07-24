@@ -1,0 +1,321 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /*Setting a gradient for the background */
+    background: linear-gradient(135deg, #fc7777 0%, #c35f71 100%);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /*A clean default font */
+    min-height: 100vh;
+}
+
+/* Navigation configuration */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.logo {
+    font-size: 32px;
+    font-family: Georgia, serif; 
+}
+
+.nav-divider {
+    border: 0; 
+    border-top: 1px solid white;
+    margin: 0 50px;
+}
+
+/* Button */
+.btn {
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    border-radius: 25px;
+    transition: background 0.3s ease;
+    height: fit-content; /*Prevent the button from stretching */
+    align-self: center;
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-login {
+    padding: 8px 30px;
+    font-size: 18px;
+}
+
+.btn-learn {
+    display: inline-block;
+    padding: 10px 40px;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/*Configuring the main layout */
+.container {
+    padding: 40px 10%;
+}
+
+.hero-headings {
+    text-align: center;
+    margin-bottom: 40px;
+    font-family: Georgia, serif;
+    color: #4a2c2c;
+    display: flex;
+    flex-direction: column;
+    width: 100%
+}
+
+.hero-headings h1 {
+    font-size: 32px;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+
+.hero-headings h2 {
+    font-size: 24px;
+    font-weight: normal;
+    opacity: 0.8;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    width: 100%;
+}
+
+/* Image and text configuration */
+.hero-image {
+    flex: 1; /*Takes up 50% of the space */
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Text takes 50% of the space */
+.hero-text {
+    flex: 1; 
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.hero-text ul {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+/* Sidebar Menu */
+.sidebar {
+    height: 100%;
+    width: 0; /*To keep the sidebar hidden by default */
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.4s;
+    padding-top: 80px;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.2);
+}
+
+/* Sidebar Links */
+.sidebar a {
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 22px;
+    color: #4a2c2c;
+    display: block;
+    transition: 0.3;
+    font-family: Georgia, serif;
+    text-align: center;
+}
+
+/*Configuration for cursor hover over options in the sidebar menu */
+.sidebar a:hover,
+.sidebar a.active {
+    color: #eb7175;
+    text-decoration: underline;
+}
+
+/* The 'X' Close Button */
+.sidebar .closebtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 40px;
+    text-decoration: none;
+}
+
+/* User Profile */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: #4a2c2c;
+}
+
+.user-icon {
+    font-size: 28px;
+    background-color: rgba(74, 44, 44, 0.15);
+    padding: 4px 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-wrapper {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+.dashboard-content h1 {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    font-weight: normal;
+    color: #4a2c2c;
+}
+
+.table-heading {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    font-weight: normal;
+    color: white;
+    margin-top: 15px;
+}
+
+.dashboard-content p {
+    font-size: 22px;
+}
+
+/* Recommendations Button */
+.btn-recommendations {
+    padding: 12px 35px;
+    font-size: 20px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid white;
+    border-radius: 30px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-recommendations:hover {
+    background-color: white;
+    color: #eb7175;
+    transform: translateY(-2px);
+}
+
+/* Personalised nutrition message */
+.personalised-messages {
+    border-left: 5px solid white; 
+    padding: 25px 35px;
+    margin: 10px auto 15px auto;
+    border-radius: 12px;
+    text-align: left;
+    max-width: 800px;
+    width: 100%;
+}
+
+.personalised-messages h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: white;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+personalised-message ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.personalised-messages li {
+    font-size: 18px;
+    color: white;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/*Action buttons */
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.btn-pill {
+    padding: 10px 28px;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.25);
+    border: 1.5px solid white;
+    border-radius: 30px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-pill:hover {
+    background-color: white;
+    color: #c35f71
+}
+
+/* Table formatting and styling */
+.details-table {
+    width: 100%;
+    max-width: 650px;
+    border-collapse: collapse;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.details-table td {
+    border: 1.5px solid black;
+    padding: 12px 20px;
+    font-size: 16px;
+}
+
+.label-col {
+    width: 30%;
+    text-align: center;
+    font-weight: 500;
+}
+
+.value-col {
+    width: 70%;
+    text-align: center;
+}

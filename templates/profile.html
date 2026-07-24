@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=""width=device-width, initial-scale="1.0">
+    <title>nutrifem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile_style.css') }}">
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="menu-icon" onclick="openNav()">&#9776;</div>
+    <div class="logo">
+      <span class="flower-icon">&#10048;</span> nutrifem
+    </div>
+
+    <div class="user-profile">
+        <span class="greeting">Hello, User</span>
+        <span class="user-icon">&#128100;</span>
+    </div>     
+  </header>
+
+  <!--To trigger the menu-->
+  <div id="sideMenu" class="sidebar">
+    <!-- Adding close button inside the menu-->
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!--Links on the menu-->
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('profile') }}" class="active">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+
+  <hr class="nav-divider">
+
+  <!--To display Flash messages -->
+<div class="flash-message">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+
+  <main class="dashboard-wrapper">
+    <div class="dashboard-content">
+        <h1>Profile</h1>
+
+        <!-- Action Buttons -->
+        <div class="profile-actions">
+          <a href="{{ url_for('update_password') }}" class="btn-pill">Update Password</a>
+          <a href="{{ url_for('questionnaire') }}" class="btn-pill">Edit Health Details</a>
+          <a href="#" class="btn-pill">Terminate Account</a>
+        </div>
+
+        <!-- Section 1: User Credentials -->
+        <h2 class="table-heading">User Credentials</h2>
+        <table class="details-table">
+          <tr>
+            <td class="label-col">Name</td>
+            <td class="value-col">{{ user.first_name }} {{ user.last_name }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Age</td>
+            <td class="value-col">{{ user.Age if user.Age else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Email Address</td>
+            <td class="value-col">{{ user.email }}</td>
+          </tr>
+        </table>
+
+        <!-- Section 2: Health Details -->
+        <h2 class="table-heading">Health Details</h2>
+        <table class="details-table">
+          <tr>
+            <td class="label-col">Height</td>
+            <td class="value-col">{{ user.Height_cm if user.Height_cm else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Weight</td>
+            <td class="value-col">{{ user.Weight_kg if user.Weight_kg else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">BMI</td>
+            <td class="value-col">{{ user.BMI if user.BMI else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Cycle Length (Days)</td>
+            <td class="value-col">{{ user.Menstrual_Cycle_Length_days if user.Menstrual_Cycle_Length_days else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Has Menstrual Irregularity?</td>
+            <td class="value-col">
+              {% if user.Menstrual_Irregularity == 1 %}
+                  Yes
+              {% elif user.Menstrual_Irregularity == 0 %}
+                  No
+              {% else %}
+                  N/A
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">Fasting Glucose mg/dL</td>
+            <td class="value-col">{{ user.Fasting_Glucose_mg_dL if user.Fasting_Glucose_mg_dL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Fasting Insulin uIU/mL</td>
+            <td class="value-col">{{ user.Fasting_Insulin_uIU_mL if user.Fasting_Insulin_uIU_mL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">HOMA IR</td>
+            <td class="value-col">{{ user.HOMA_IR if user.HOMA_IR else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Luteneizing Hormone mIU/mL</td>
+            <td class="value-col">{{ user.LH_mIU_mL if user.LH_mIU_mL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Follicle-Stimulating Hormone mIU/mL</td>
+            <td class="value-col">{{ user.FSH_mIU_mL if user.FSH_mIU_mL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">LH/FSH Ratio</td>
+            <td class="value-col">{{ user.LH_FSH_Ratio if user.LH_FSH_Ratio else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Total Testosterone</td>
+            <td class="value-col">{{ user.Total_Testosterone_ng_dL if user.Total_Testosterone_ng_dL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Free Testosterone</td>
+            <td class="value-col">{{ user.Free_Testosterone_pg_mL if user.Free_Testosterone_pg_mL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Free Testosterone</td>
+            <td class="value-col">{{ user.Total_Cholesterol_mg_dL if user.Total_Cholesterol_mg_dL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Total Cholesterol</td>
+            <td class="value-col">{{ user.Total_Cholesterol_mg_dL if user.Total_Cholesterol_mg_dL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Triglycerides</td>
+            <td class="value-col">{{ user.Triglycerides_mg_dL if user.Triglycerides_mg_dL else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Sugar Intake Level</td>
+            <td class="value-col">{{ user.Dietary_Sugar_Intake if user.Dietary_Sugar_Intake else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Physical Activity Level</td>
+            <td class="value-col">{{ user.Physical_Activity_Level if user.Physical_Activity_Level else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Has PCOS?</td>
+            <td class="value-col">
+              {% if user.PCOS_Diagnosis == 1 %}
+                  Yes
+              {% elif user.PCOS_Diagnosis == 0 %}
+                  No
+              {% else %}
+                  N/A
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">Hirsutism Score</td>
+            <td class="value-col">{{ user.Hirsutism_Score_FG if user.Hirsutism_Score_FG else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Acne Severity Level</td>
+            <td class="value-col">{{ user.Acne_Severity if user.Acne_Severity else 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="label-col">Has Alopecia?</td>
+            <td class="value-col">
+              {% if user.Alopecia == 1 %}
+                  Yes
+              {% elif user.Alopecia == 0 %}
+                  No
+              {% else %}
+                  N/A
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">Has Skin Darkening Acanthosis?</td>
+            <td class="value-col">
+              {% if user.Skin_Darkening_Acanthosis == 1 %}
+                  Yes
+              {% elif user.Skin_Darkening_Acanthosis == 0 %}
+                  No
+              {% else %}
+                  N/A
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+    </div>
+  </main>
+
+  <!--JavaScript for menu sidebar-->
+  <script>
+    /*Opening the menu by changing the width to 250px */
+    function openNav() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+
+    /*Closing the menu by changing the width back to 0 */
+    function closeNav() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+  </script> 
+</body>
+</html>
