@@ -78,6 +78,37 @@ EMAIL_PATTERN = re.compile(r'^[\w\.-]+@[\w\.-]+\.[A-Za-z]{2,}$')
 PASSWORD_PATTERN = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$')
 # ------------------------------------
 
+
+# ------------------------------------
+def generate_nutrition_message(patient_vector):
+    #Analysing the patients target vector 
+    #Generating a personalised explanation based on the results
+    #And if nutrients needs are elevated above the baseline
+
+    #Listing the order of the vector
+    fiber, pufa, mag, vit_d, zinc = patient_vector
+
+    #Initialising variable for the messages
+    messages = []
+
+    #Constraints for the messages if they are above the baseline level
+    if fiber > 25.0: 
+        messages.append("Increased fiber take: this can help manage blood glucose spikes and support insulin sensitivity.")
+    if pufa > 12.0:
+        messages.append("Extra omega-3 and polyunsaturated fats: this can help reduce inflammation and lower lipid levels.")
+    if mag > 320.0: 
+        messages.append("Higher magnesium intake: this can support insulin regulation and metabolic stability.")
+    if vit_d > 10.0: 
+        messages.append("Increased Vitamin D: this can support hormonal balance and menstrual regularity.")
+    if zinc > 7.0:
+        messages.append("Extra Zinc: this can help manage androgen related symptoms like acne or hair loss.")
+
+    #If nutrient levels are perfectly at baseline level without elevated needs
+    if not messages:
+        return "Nutrifem suggests a balanced baseline diet to safely maintain your current metabolic and hormonal health."
+
+    return messages
+
 # ------------------------------------
 # Routes for pages
 
@@ -237,15 +268,41 @@ def view_recs():
         flash("Please log in to view your recommendations.") 
         return redirect(url_for("login"))
 
+    #Session is user's email
+    user_email = session["ID"]
+
+    #Retrieving the user's vector from the database first
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT Target_Nutrient_Vector FROM patientdata where lower(email) = lower(?)", (user_email,))
+    user_row = cursor.fetchone()
+    conn.close()
+
+    #Printing error message if nutrient profile is not located
+    if not user_row:
+        flash("Could not locate nutrient profile.")
+        return redirect(url_for("dashboard"))
+
+    import json
+    patient_vector = json.loads(user_row[0])
+
+    #Generating personalised nutrition message
+    personalised_messages = generate_nutrition_message(patient_vector)
+
     #Running the recommender engine
-    top_10_foods = get_recommendations(session["ID"])
+    top_10_foods = get_recommendations(user_email, DB_PATH, top_n=10)
 
     if top_10_foods is None:
         flash("Could not locate nutrient profile for your account.")
         return redirect(url_for("questionnaire"))
     
     #Passing the recommendations results into the HTML page for display
-    return render_template('view_recs.html', recommendations=top_10_foods, user_name=session.get("userFirstName", "User"))
+    return render_template(
+        'view_recs.html', 
+        recommendations=top_10_foods, 
+        user_name=session.get("userFirstName", "User"),
+        messages=personalised_messages
+        )
 
 # Route for the Questionnaire page
 @app.route('/questionnaire', methods=['GET', 'POST'])

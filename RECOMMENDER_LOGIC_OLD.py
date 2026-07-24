@@ -117,26 +117,17 @@ df_nutrient = pd.read_csv('nutrient.csv')
 target_usda_ids = [291, 646, 304, 309, 325, 326]
 df_selected_nutrients_2 = df_nutrient[df_nutrient['nutrient_nbr'].isin(target_usda_ids)]
 
-##Fixing the filtering 
-food_data = pd.read_csv('food.csv')
-
-#Filtering for only master food records and filtering out lab tests and sub samples
-valid_data_types=['foundation_food', 'sr_legacy_food']
-food_data = food_data[food_data['data_type'].isin(valid_data_types)]
-
-#Grouping similar foods together
-food_data['short_name'] = food_data['description'].apply(lambda x: ', '.join(str(x).split(',')[:2]))
-
 #Relational Merge Pipeline
 #Linking the filtered nutrients to the bridge table
 merge_part_1 = pd.merge(df_food_nutrient, df_selected_nutrients_2, left_on='nutrient_id', right_on='id', how='inner')
 
 #Linking the result to food name table
-df_joined_3 = pd.merge(merge_part_1, food_data, on='fdc_id', how='inner')
+df_joined_2 = pd.merge(merge_part_1, df_food, on='fdc_id', how='inner')
 
-#Using the short name to merge duplicate foods
-food_matrix_2 = df_joined_3.pivot_table(
-    index='short_name',
+#Converting the table from a vertical format to horizontal format
+#Each row represents one unique food
+food_matrix_2 = df_joined_2.pivot_table(
+    index='description',
     columns='name',
     values='amount',
     aggfunc='mean'
@@ -156,9 +147,10 @@ nutrients_5d_order = [
 food_matrix_5d = food_matrix_2[nutrients_5d_order]
 
 # New Cosine Similarity Food recommendation engine
-# Names are trapped in the index so need to reset index
-food_matrix_5d = food_matrix_5d.reset_index()
-food_matrix_5d.rename(columns={'short_name': 'food_description'}, inplace=True)
+scaler_2 = MinMaxScaler()
+food_matrix_scaled_2 = scaler_2.fit_transform(food_matrix_5d)
+food_scaled_2 = pd.DataFrame(food_matrix_scaled_2, columns=food_matrix_5d.columns, index=food_matrix_5d.index)
+
 food_matrix_5d.to_csv("food_matrix_5d.csv", index=False)
 
 
@@ -205,6 +197,10 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
         "Vitamin_D_Total_UG": 'vitamin_d_mcg',
         "Zinc, Zn": 'zinc_mg'
     })
+
+    #Retrieving the names of foods to attach them to the matrix
+    names_df = pd.read_sql_query("SELECT description AS food_description FROM food", conn)
+    food_df['food_description'] = names_df['food_description']
 
     conn.close()
 
