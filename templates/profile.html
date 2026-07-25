@@ -54,9 +54,32 @@
 
         <!-- Action Buttons -->
         <div class="profile-actions">
+          <!-- Route to update password -->
           <a href="{{ url_for('update_password') }}" class="btn-pill">Update Password</a>
+
+          <!-- Route to edit health questionnaire details -->
           <a href="{{ url_for('questionnaire') }}" class="btn-pill">Edit Health Details</a>
-          <a href="#" class="btn-pill">Terminate Account</a>
+
+          <!-- Route to terminate account -->
+          <button type="button" class="btn-pill btn-danger" onclick="showTerminateModal()">Terminate Account</button>
+        </div>
+
+        <!-- Terminate Account Confirmation Check Modal Overlay to see if user wants to proceed -->
+        <div id="dangerModal" class="modal-overlay">
+          <div class="modal-box">
+            <h2>Confirm Account Deletion</h2>
+            <p>Are you sure you want to continue terminating your account? <strong>This action cannot be undone and all of your personal details and health data will be permanently deleted.</strong></p>
+
+            <div class="modal-actions">
+              <!-- The form triggers POST request to /terminate_account -->
+               <form action="{{ url_for('terminate_account') }}" method="POST">
+                  <!--Proceed with termination button-->
+                  <button type="submit" class="btn-confirm-delete">Yes, Terminate Account</button>
+               </form>
+               <!--Cancel button-->
+               <button type="button" class="btn-cancel" onclick="closeTerminateModal()">Cancel</button>
+            </div>
+          </div>
         </div>
 
         <!-- Section 1: User Credentials -->
@@ -217,6 +240,16 @@
     /*Closing the menu by changing the width back to 0 */
     function closeNav() {
       document.getElementById("sideMenu").style.width = "0";
+    }
+
+    /* Opening the account termination confirmation modal */
+    function showTerminateModal() {
+      document.getElementById("dangerModal").style.display = "flex";
+    }
+
+    /* Closing the account termination confirmation modal */
+    function closeTerminateModal() {
+      document.getElementById("dangerModal").style.display = "none";
     }
   </script> 
 </body>

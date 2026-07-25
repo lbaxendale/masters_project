@@ -397,6 +397,37 @@ def update_password():
         flash("Password updated successfully!", "success")
         return redirect(url_for("profile"))
 
+# Route for terminating an account
+@app.route('/terminate_account', methods=['POST'])
+def terminate_account():
+    if "ID" not in session:
+        flash("Please log in to continue.")
+        return redirect(url_for("login"))
+
+    user_email = session["ID"]
+
+    try:
+        #Estabilishing connection to the database
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+
+        #Deleting user record from database
+        cursor.execute("DELETE from patientdata WHERE lower(email) = lower(?)", (user_email,))
+        conn.commit()
+        conn.close()
+
+        #Clearing the session log
+        session.clear()
+
+        #Displaying flash message and redirecting to login page
+        flash("You have successfully terminated your account and all of your data has been deleted.", "success")
+        return redirect(url_for("login"))
+    
+    except Exception as e:
+        log.error("Error terminating account for %s: %s", user_email, e)
+        flash("An error occured while attempting to delete your account. Please try again.")
+        return redirect(url_for("profile"))
+
 # Route for the Questionnaire page
 @app.route('/questionnaire', methods=['GET', 'POST'])
 def questionnaire():

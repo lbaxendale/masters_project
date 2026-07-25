@@ -68,6 +68,21 @@
     function closeNav() {
       document.getElementById("sideMenu").style.width = "0";
     }
+
+    /*Toggle extra content visibility */
+    function toggleExtraContent() {
+      const extraContent = document.getElementById("extra-content");
+      const btn = document.getElementById("LearnMoreBtn");
+
+      if (extraContent.style.display === "none") {
+        extraContent.style.display = "block";
+        btn.textContent = "Show Less";
+      } else {
+        extraContent.style.display = "none";
+        btn.textContent = "Learn More";
+      }
+    }
+
   </script> 
 </body>
 </html>
