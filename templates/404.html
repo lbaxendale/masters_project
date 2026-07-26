@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>nutrifem</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/404_style.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="menu-icon" onclick="openNav()">&#9776;</div>
+
+    <div class="logo">
+      <span class="flower-icon">&#10048;</span> nutrifem </div>
+      
+    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+    </header>
+
+  <!--To trigger the menu-->
+  <div id="sideMenu" class="sidebar">
+    <!-- Adding close button inside the menu-->
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <!--Links on the menu-->
+    <a href="/" class="active">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
+  </div>
+
+  <hr class="nav-divider">
+
+  <main class="dashboard-wrapper" style="padding: 60px 20px;">
+    <div class="dashboard-content" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0px; margin-top: 40px;">
+      <h1 style="font-family: Georgia, serif; font-size: 36px; font-weight: normal; color: #4a2c2c;">Error 404: Page Not Found</h1>
+      <p style="font-size: 18px; color: white;">The page you are looking for does not exist.</p>
+      <a href="{{ url_for('home') }}" class="btn btn-recommendations" style="padding: 12px 35px; font-size: 18px; margin-top: 10px;">Back to Home</a>
+    </div>
+  </main>
+
+  <!--JavaScript for menu sidebar-->
+  <script>
+    /*Opening the menu by changing the width to 250px */
+    function openNav() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+
+    /*Closing the menu by changing the width back to 0 */
+    function closeNav() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+  </script> 
+</body>
+</html>

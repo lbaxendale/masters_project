@@ -569,6 +569,13 @@ def questionnaire():
 
     return render_template('questionnaire.html')
 
+# Route for error handling 404 page 
+@app.errorhandler(404)
+def not_found(e):
+    # templates/404.html uses: {{ url_for('static', filename='images/3.jpg') }}
+    log.warning("404 Not Found: %s", request.path)
+    return render_template("404.html"), 404
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)  
