@@ -164,6 +164,27 @@ body {
     text-decoration: none;
 }
 
+
+/* User Profile */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    color: #4a2c2c;
+}
+
+.user-icon {
+    font-size: 28px;
+    background-color: rgba(74, 44, 44, 0.15);
+    padding: 4px 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /*Styling for Login Page*/
 .login-wrapper {
     display: flex;

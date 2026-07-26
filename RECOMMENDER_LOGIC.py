@@ -27,69 +27,6 @@ from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 
-
-# -------------------------------------------------------------------
-#Nutrient reccomender python logic
-def nutrient_vector_2(patient_record):
-
-    # Set a baseline daily reccomended intake of nutrients
-    magnesium = 320.0 #milligrams
-    fibre = 25.0 #grams
-    PUFA = 12.0 #grams
-    zinc = 7.0 #milligrams 25mg max
-    vitamin_d = 10.0 #micrograms (1000 times smaller than a milligram) max 50ug
-
-    #Fiber reccomendation logic
-    #High HOMA IR or high Fasting Glucose level can indicate insulin resistance
-    #Using a continuous proportional multiplier with 15g as a safety cap      
-    if patient_record['HOMA_IR'] > 1.9 or patient_record['Fasting_Glucose_mg_dL'] > 99:
-        fibre_addition = patient_record['HOMA_IR'] - 1.9
-        fibre += min(15.0, fibre_addition * 1.5)
-
-    #Omega 3 / Polyunsaturated fat reccommendation logic
-    #High triglycerides and the presence of severe acne can indicate high lipids and inflammation
-    #Omega 3 can lower lipid levels and combat skin inflammation
-    #Using a continuous proportional multiplier with 10g as a safety cap
-    if 150 <= patient_record['Triglycerides_mg_dL'] > 199 and patient_record['Acne_Severity'] == 3:
-        PUFA_addition = patient_record['Triglycerides_mg_dL'] - 199
-        PUFA += min(10.0, PUFA_addition * 1.8)
-
-    if 150 <= patient_record['Triglycerides_mg_dL'] > 199 and patient_record['Acne_Severity'] == 2:
-        PUFA_addition = patient_record['Triglycerides_mg_dL'] - 199
-        PUFA += min(10.0, PUFA_addition * 1.5)
-
-    if 150 <= patient_record['Triglycerides_mg_dL'] > 199 and patient_record['Acne_Severity'] == 1:
-        PUFA_addition = patient_record['Triglycerides_mg_dL'] - 199
-        PUFA += min(10.0, PUFA_addition * 1.3)
-
-    #Magnesium reccomendation logic
-    #Magnesium can support insulin resistance and hormonal imbalance
-    #Using a continuous proportional multiplier with 80mg as a safety cap
-    if patient_record['HOMA_IR'] > 1.9 and patient_record['PCOS_Diagnosis'] == 1:
-        magnesium_addition = patient_record['HOMA_IR'] - 1.9
-        magnesium += min(80, magnesium_addition * 10)
-
-    if patient_record['HOMA_IR'] > 1.9 and patient_record['PCOS_Diagnosis'] == 1:
-        magnesium_addition_2 = patient_record['HOMA_IR'] - 1.9
-        magnesium += min(80, magnesium_addition_2 * 7.5)
-
-    #Vitamin D recommendation logic
-    #Vitamin D can support patients with hormonal imbalance, insulin resistance and hirsutism
-    #Using a continuous proportional multiplier with 80mg as a safety cap
-    if patient_record['BMI'] > 25:
-        vitamin_d_addition = patient_record['BMI'] - 25
-        vitamin_d += min(40, vitamin_d_addition * 2.5)
-
-    #Zinc recommendation logic
-    #Zinc can support PCOS patients with hirsutism, alopecia
-    if patient_record['Total_Testosterone_ng_dL'] > 46:
-        zinc_addition = patient_record['Total_Testosterone_ng_dL'] - 46
-        zinc += min(18, zinc_addition * 1.5)
-
-    #Round the nutrient figures
-    return [round(fibre, 1), round(PUFA, 1), round(magnesium, 1), round(vitamin_d, 1), round(zinc, 1)]
-
-
 # -------------------------------------------------------------------
 #Hashing the passwords in the csv file and populating it 
 def populate_db(db_path="patientdb.db"):
@@ -196,6 +133,7 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     #Retrieving the names of foods to attach them to the matrix
     #Loading the saved food_matrix_5d table 
     food_df = pd.read_sql_query("SELECT * FROM food_matrix_5d", conn)
+    conn.close()
 
     #Renaming the Raw DQL nutrient column names
     food_df = food_df.rename(columns={
@@ -206,34 +144,76 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
         "Zinc, Zn": 'zinc_mg'
     })
 
-    conn.close()
+    #Creating copies of databases for filtering
+    filtered_food_db = food_df.copy()
+
+    #Nutrient order
+    target_fiber = patient_vector[0]
+    target_pufa = patient_vector[1]
+    target_magnesium = patient_vector[2]
+    target_vit_d = patient_vector[3]
+    target_zinc = patient_vector[4]
+
+    #Elevated need for Magnesium
+    if target_fiber > 25:
+        #Filtering out the foods that don't contain a lot of Zinc
+        filtered_food_db = filtered_food_db[filtered_food_db['fiber_g'] > 0.5]
+
+    #Elevated need for Magnesium
+    if target_pufa > 12:
+        #Filtering out the foods that don't contain a lot of Zinc
+        filtered_food_db = filtered_food_db[filtered_food_db['pufa_g'] > 0.5]
+
+    #Elevated need for Magnesium
+    if target_magnesium > 320:
+        #Filtering out the foods that don't contain a lot of Zinc
+        filtered_food_db = filtered_food_db[filtered_food_db['magnesium_mg'] > 0.5]
+
+    #Elevated need for vitamin D
+    if target_vit_d > 10:
+        #Filtering out the foods that don't contain a lot of Vitamin D
+        filtered_food_db = filtered_food_db[filtered_food_db['vitamin_d_mcg'] > 0.5]
+
+    #Elevated need for Zinc
+    if target_zinc > 7:
+        #Filtering out the foods that don't contain a lot of Zinc
+        filtered_food_db = filtered_food_db[filtered_food_db['zinc_mg'] > 0.5]
+
+    #If the filtering is too restrictive and returns nothing, reset to the full database
+    if filtered_food_db.empty:
+        filtered_food_db = food_df.copy()
 
     #Isolating the 5 nutrients in the vector
     #For scaling
     nutrient_cols = ['fiber_g', 'pufa_g', 'magnesium_mg', 'vitamin_d_mcg', 'zinc_mg']
+    food_numeric_matrix = filtered_food_db[nutrient_cols].values
     
     #Mapping the nutrient values to the food matrix
-    food_matrix = food_df[nutrient_cols].values
+    #Converting the patient vector to 2D and scaling it normally
+    scaler = MinMaxScaler()
+    scaled_food_db = scaler.fit_transform(food_numeric_matrix)
     patient_matrix = np.array(patient_vector).reshape(1, -1)
 
     #Scaling the nutrients
     scaler = MinMaxScaler()
-    scaled_foods = scaler.fit_transform(food_matrix)
+    scaled_foods = scaler.fit_transform(food_numeric_matrix)
     scaled_patient = scaler.transform(patient_matrix)
 
-    #Running the cosine similarity engine 
-    similarity_scores = cosine_similarity(scaled_patient, scaled_foods)[0]
-    food_results_df = food_df.copy()
-    food_results_df['Match_Score'] = np.round(similarity_scores * 100, 1)
+    #Calculating the similarity strictly across the subspace
+    score_similarity = cosine_similarity(scaled_patient, scaled_foods)[0]
+
+    #Attaching the scores back and treturning the top results
+    results_df = filtered_food_db.copy()
+    results_df['Match_Score'] = np.round(score_similarity * 100, 2)
 
     #Returning the top N items as a list of dictionaries for Jinja2 HTML rendering
-    top_foods = food_results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
+    top_foods = results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
     return top_foods.to_dict(orient='records')
 
 #df = pd.read_csv('patientdata.csv')
 
-def hash_password(password):
-    pwd_bytes = password.encode('utf-8')
-    salt = bcrypt.gensalt()
-    hashed = bcrypt.hashpw(pwd_bytes, salt)
-    return hashed.decode('utf-8')
+#def hash_password(password):
+#    pwd_bytes = password.encode('utf-8')
+#    salt = bcrypt.gensalt()
+#    hashed = bcrypt.hashpw(pwd_bytes, salt)
+#    return hashed.decode('utf-8')

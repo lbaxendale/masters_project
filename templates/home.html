@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content=""width=device-width, initial-scale="1.0">
-    <title>nutrifem</title>
+    <title>Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home_style.css') }}">
 </head>
 
@@ -49,7 +49,7 @@
           <li>Weight management</li>
           <li>Insulin resistant management</li>
         </ul>
-        <a href ="#" class="btn btn-learn">Learn More</a>
+        <a href ="{{ url_for('about') }}" class="btn btn-learn">Learn More</a>
       </div>
     </div>
   </main>

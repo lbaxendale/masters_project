@@ -8,7 +8,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 #Other python files
 from DATABASE_CREATION import init_db
-from RECOMMENDER_LOGIC import nutrient_vector_2
 from RECOMMENDER_LOGIC import get_recommendations
 import json
 
