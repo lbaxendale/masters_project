@@ -73,6 +73,43 @@
             required>
         </div>
 
+        <div class="form-group"> 
+          <label for="diet">What diet do you follow?</label>
+          <select name ="diet" id="diet">
+            <option value="omnivore">Omnivore</option>
+            <option value="pesketarian">Pesketarian</option>
+            <option value="Vegetarian">Vegan</option>
+          </select>
+        </div>
+
+        <div class="form-group"> 
+          <label for="religion">What religion do you identify with?</label>
+          <select name ="religion" id="religion">
+            <option value="christian">Christian</option>
+            <option value="muslim">Muslim</option>
+            <option value="jewish">Jewish</option>
+            <option value="hindu">Hindu</option>
+            <option value="Agnostic">Agnostic</option>
+            <option value="no_religion">No Religion</option>
+            <option value="no_response">Prefer not to say</option>
+          </select>
+        </div>
+
+        <div class="form-group"> 
+          <label for="allergens">Do you have any allergies? Select multiple if applicable.</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="milk">Milk</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="egg">Egg</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="peanut">Peanut</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="soy">Soy</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="wheat">Wheat</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="tree_nut">Tree Nut</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="shellfish">Shellfish</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="fish">Fish</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="sesame">Sesame</label>
+          </div> 
+        </div>
+
         <div class="form-group">
           <label for="cycle_length">Average Length of Menstrual Cycle (days)</label>
           <input 

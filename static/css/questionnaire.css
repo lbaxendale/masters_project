@@ -307,3 +307,43 @@ button.btn-submit {
     font-size: 16px;
     cursor: pointer;
 }
+
+/* Pill shaped dropdown select boxes */
+.form-group select {
+    width: 100%;
+    height: 45px;
+    border-radius: 25px;
+    border: none;
+    padding: 0 20px;
+    font-size: 16px;
+    outline: none;
+    background-color: white;
+    color: #4a2c2c;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.form-group select:focus {
+    box-shadow: 0 0 0 2px #4a2c2c;
+}
+
+/* Aligning checkboxes next to eachother for easier to use UI */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px 20px;
+    padding-left: 10px;
+    margin-top: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
