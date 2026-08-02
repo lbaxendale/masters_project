@@ -561,7 +561,7 @@ def questionnaire():
                  """, (
                     age, height, weight, bmi, cycle_length, 
                     menstrual_irregularity, pcos_diagnosis, sugar_intake, physical_activity,
-                    acne_severity, alopecia, acanthosis, fg_score, 
+                    acne_severity, alopecia, acanthosis, hirsutism, fg_score, 
                     lh_level, fsh_level, lh_fsh_ratio, glucose_level, 
                     insulin_level, homa_ir, total_tes, free_tes, 
                     cholesterol, triglycerides, vector_json, allergens_string, user_email
@@ -582,9 +582,19 @@ def questionnaire():
             log.warning("Validation failed: %s", e)
             return redirect(url_for("questionnaire"))
 
+    #Retrieiving data to pre-populate form
+    #This is for existing users who have filled in the questionnaire form previously
+    user_email = session["ID"]
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
+    user_data = cursor.fetchone()
+    conn.close()
+
     #Retrieving first name from the session but default to user if missing
     user_first_name = session.get("first_name", "User")
-    return render_template('questionnaire.html', first_name=user_first_name)
+    return render_template('questionnaire.html', first_name=user_first_name, user=user_data)
 
 # Route for error handling 404 page 
 @app.errorhandler(404)

@@ -46,7 +46,8 @@
             min="18"
             max="120"
             title="Please enter your age." 
-            required>
+            required
+            value="{{ user.Age if user and user.Age != None else '' }}">
         </div>
 
         <div class="form-group"> 
@@ -58,7 +59,8 @@
             min="120"
             max="220"
             title="Please enter your height." 
-            required>
+            required
+            value="{{ user.Height_cm if user and user.Height_cm != None else '' }}">
         </div>
 
         <div class="form-group"> 
@@ -70,7 +72,8 @@
             min="20"
             max="200"
             title="Please enter your weight." 
-            required>
+            required
+            value="{{ user.Weight_kg if user and user.Weight_kg != None else '' }}">
         </div>
 
         <div class="form-group"> 
@@ -87,15 +90,15 @@
         <div class="form-group"> 
           <label for="allergens">Do you have any allergies? Select multiple if applicable.</label>
           <div class="checkbox-grid">
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="milk">Milk</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="egg">Egg</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="peanut">Peanut</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="soy">Soy</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="wheat">Wheat</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="tree_nut">Tree Nut</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="shellfish">Shellfish</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="fish">Fish</label>
-            <label class="checkbox-item"><input type="checkbox" name="allergens" value="sesame">Sesame</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="milk" {% if user and user.Allergens and 'milk' in user.Allergens %}checked{% endif %}>Milk</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="egg" {% if user and user.Allergens and 'egg' in user.Allergens %}checked{% endif %}>Egg</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="peanut" {% if user and user.Allergens and 'peanut' in user.Allergens %}checked{% endif %}>Peanut</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="soy" {% if user and user.Allergens and 'soy' in user.Allergens %}checked{% endif %}>Soy</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="wheat" {% if user and user.Allergens and 'wheat' in user.Allergens %}checked{% endif %}>Wheat</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="tree_nut" {% if user and user.Allergens and 'tree_nut' in user.Allergens %}checked{% endif %}>Tree Nut</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="shellfish" {% if user and user.Allergens and 'shellfish' in user.Allergens %}checked{% endif %}>Shellfish</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="fish" {% if user and user.Allergens and 'fish' in user.Allergens %}checked{% endif %}>Fish</label>
+            <label class="checkbox-item"><input type="checkbox" name="allergens" value="sesame" {% if user and user.Allergens and 'sesame' in user.Allergens %}checked{% endif %}>Sesame</label>
           </div> 
         </div>
 
@@ -108,22 +111,23 @@
             min="10"
             max="60"
             title="Please enter the average length of your menstrual cycle." 
-            required>
+            required
+            value="{{ user.Menstrual_Cycle_Length_days if user and user.Menstrual_Cycle_Length_days != None else '' }}">
         </div>
 
         <div class="form-group">
           <label for="menstrual_irregularity">Do you have irregular menstrual cycles?</label>
           <div class="radio-group">
-            <label><input type="radio" id="yes" name="menstrual_irregularity" value="Yes"> Yes</label>
-            <label><input type="radio" id="no" name="menstrual_irregularity" value="No" checked> No</label>
+            <label><input type="radio" id="yes" name="menstrual_irregularity" value="Yes" {% if user and user.Menstrual_Irregularity == 1 %}checked{% endif %}> Yes</label>
+            <label><input type="radio" id="no" name="menstrual_irregularity" value="No" {% if user and user.Menstrual_Irregularity != 1 %}checked{% endif %}> No</label>
           </div>
         </div>
         
         <div class="form-group">
           <label for="pcos_diagnosis">Do you have PCOS?</label>
           <div class="radio-group">
-            <label><input type="radio" id="yes" name="pcos_diagnosis" value="Yes"> Yes</label>
-            <label><input type="radio" id="no" name="pcos_diagnosis" value="No" checked> No</label>
+            <label><input type="radio" id="yes" name="pcos_diagnosis" value="Yes" {% if user and user.PCOS_Diagnosis == 1 %}checked{% endif %}> Yes</label>
+            <label><input type="radio" id="no" name="pcos_diagnosis" value="No" {% if user and user.PCOS_Diagnosis != 1 %}checked{% endif %}> No</label>
           </div>
         </div>
 
@@ -136,7 +140,8 @@
             min="1"
             max="3"
             title="Please enter your average sugar intake level." 
-            required>
+            required
+            value="{{ user.Dietary_Sugar_Intake if user and user.Dietary_Sugar_Intake != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -148,7 +153,8 @@
             min="1"
             max="3"
             title="Please enter your physical activity level." 
-            required>
+            required
+            value="{{ user.Physical_Activity_Level if user and user.Physical_Activity_Level != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -160,30 +166,31 @@
             min="0"
             max="3"
             title="Please enter your acne severity level." 
-            required>
+            required
+            value="{{ user.Acne_Severity if user and user.Acne_Severity != None else '' }}">
         </div>
 
         <div class="form-group">
           <label for="alopecia">Do you have alopecia?</label>
           <div class="radio-group">
-            <label><input type="radio" id="yes" name="alopecia" value="Yes"> Yes</label>
-            <label><input type="radio" id="no" name="alopecia" value="No" checked> No</label>
+            <label><input type="radio" id="yes" name="alopecia" value="Yes" {% if user and user.Alopecia == 1 %}checked{% endif %}> Yes</label>
+            <label><input type="radio" id="no" name="alopecia" value="No" {% if user and user.Alopecia != 1 %}checked{% endif %}> No</label>
           </div>
         </div>
 
         <div class="form-group">
           <label for="acanthosis">Do you have skin darkening acanthosis?</label>
           <div class="radio-group">
-            <label><input type="radio" id="yes" name="acanthosis" value="Yes"> Yes</label>
-            <label><input type="radio" id="no" name="acanthosis" value="No" checked> No</label>
+            <label><input type="radio" id="yes" name="acanthosis" value="Yes" {% if user and user.Skin_Darkening_Acanthosis == 1 %}checked{% endif %}> Yes</label>
+            <label><input type="radio" id="no" name="acanthosis" value="No" {% if user and user.Skin_Darkening_Acanthosis != 1 %}checked{% endif %}> No</label>
           </div>
         </div>
         
         <div class="form-group">
           <label for="hirsutism">Do you have hirsutism?</label>
           <div class="radio-group">
-            <label><input type="radio" id="yes" name="hirsutism" value="Yes"> Yes</label>
-            <label><input type="radio" id="no" name="hirsutism" value="No" checked> No</label>
+            <label><input type="radio" id="yes" name="hirsutism" value="Yes" {% if user and user.Hirsutism_Score_FG == 1 %}checked{% endif %}> Yes</label>
+            <label><input type="radio" id="no" name="hirsutism" value="No" {% if user and user.Hirsutism_Score_FG != 1 %}checked{% endif %}> No</label>
           </div>
         </div>
 
@@ -196,7 +203,8 @@
             min="0"
             max="24"
             title="Please enter your Ferriman-Gallwey Hirsutism score." 
-            required>
+            required
+            value="{{ user.Hirsutism_Score_FG if user and user.Hirsutism_Score_FG != None else '' }}">
         </div>
 
         <p>If you can also provide the following data it can support your recommendations.</p>
@@ -209,7 +217,8 @@
             id="lh_level" 
             name="lh_level"
             min="1"
-            max="30">
+            max="30"
+            value="{{ user.LH_mIU_mL if user and user.LH_mIU_mL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -219,7 +228,8 @@
             id="fsh_level" 
             name="fsh_level"
             min="1"
-            max="30">
+            max="30"
+            value="{{ user.FSH_mIU_mL if user and user.FSH_mIU_mL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -229,7 +239,8 @@
             id="glucose_level" 
             name="glucose_level"
             min="30"
-            max="150">
+            max="150"
+            value="{{ user.Fasting_Glucose_mg_dL if user and user.Fasting_Glucose_mg_dL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -239,7 +250,8 @@
             id="insulin_level" 
             name="insulin_level"
             min="1"
-            max="40">
+            max="40"
+            value="{{ user.Fasting_Insulin_uIU_mL if user and user.Fasting_Insulin_uIU_mL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -249,7 +261,8 @@
             id="total_tes" 
             name="total_tes"
             min="1"
-            max="120">
+            max="120"
+            value="{{ user.Total_Testosterone_ng_dL if user and user.Total_Testosterone_ng_dL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -259,7 +272,8 @@
             id="free_tes" 
             name="free_tes"
             min="1"
-            max="20">
+            max="20"
+            value="{{ user.Free_Testosterone_pg_mL if user and user.Free_Testosterone_pg_mL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -269,7 +283,8 @@
             id="cholesterol" 
             name="cholesterol"
             min="90"
-            max="350">
+            max="350"
+            value="{{ user.Total_Cholesterol_mg_dL if user and user.Total_Cholesterol_mg_dL != None else '' }}">
         </div>
 
         <div class="form-group">
@@ -279,7 +294,8 @@
             id="triglycerides" 
             name="triglycerides"
             min="90"
-            max="350">
+            max="350"
+            value="{{ user.Triglycerides_mg_dL if user and user.Triglycerides_mg_dL != None else '' }}">
         </div>
 
         <button type="submit" class="btn btn-submit">Submit</button>

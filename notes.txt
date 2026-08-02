@@ -2,12 +2,10 @@
 -Pagination
 
 -Dietary requirements
--Allergens
 -Flash messages
 -Implementation 
 -Search top 10 by category
 -Search by recommended nutrient
--When updating health details, make sure existing details that don't need to be changed remain the same
 -Patients with elevated fiber needs are being recommended foods with no fiber. 
 -Display nutrition vector?
 -Retry everything with multiple imputation.
@@ -15,8 +13,9 @@
 -table of figures
 -User consent protocols
 -limitations to nutrients - discussion
--restaurant latino
--ALLERGENS COLUMN
+-restaurant latino?
+-vitamin d
+-nutrient vector 2 error in working_app?
 
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X
