@@ -130,6 +130,10 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     
     patient_vector = json.loads(row[0])
 
+    #Allergens list
+    #Parsing the comma-seperated string back into a Python list
+    patient_allergens = row[1].split(',') if row[1] else []
+
     #Retrieving the names of foods to attach them to the matrix
     #Loading the saved food_matrix_5d table 
     food_df = pd.read_sql_query("SELECT * FROM food_matrix_5d", conn)
@@ -146,6 +150,28 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
 
     #Creating copies of databases for filtering
     filtered_food_db = food_df.copy()
+
+    #Filtering logic for allergens
+    #All keywords to filter out allergens out of the  
+    allergen_keywords = {
+        'milk': 'milk|cheese|yogurt|butter|cream|whey|dairy|ghee|paneer',
+        'egg': 'egg|mayonnaise',
+        'peanut':'peanut',
+        'soy':'soy|tofu|edamame|miso',
+        'wheat': 'wheat|flour|bread|pasta|cereal|bran|gluten|noodle',
+        'tree_nut': 'almond|walnut|pecan|cashew|pistachio|macadamia|hazelnut|pine nut',
+        'shellfish': 'shrimp|crab|lobster|prawn|crayfish|scallop|mussel|oyster|clam',
+        'fish': 'salmon|tuna|cod|trout|halibut|sardine|mackerel|anchovy|pollock|fish',
+        'sesame':'sesame|tahini'
+    }
+
+    #Iterating through the user's saved allergens and droping matching foods
+    for allergen in patient_allergens:
+        if allergen in allergen_keywords:
+            pattern = allergen_keywords[allergen]
+            #Keeping the rows where the food description does not contain the allergen words
+            mask = ~filtered_food_db['food_description'].str.contains(pattern, case=False, na=False)
+            filtered_food_db = filtered_food_db[mask]
 
     #Nutrient order
     target_fiber = patient_vector[0]

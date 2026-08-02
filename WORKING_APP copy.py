@@ -522,10 +522,6 @@ def questionnaire():
                  raise ValueError("Acne severity is required.")
              if not fg_score:
                  raise ValueError("Ferriman-Gallwey Hirsutism is required.")
-
-             #Extracting the list of allergens 
-             allergens_list = request.form.getlist("allergens")
-             allergens_string = ",".join(allergens_list) if allergens_list else ""
             
              patient_data_for_vector = {
                  'HOMA_IR': homa_ir,
@@ -556,7 +552,7 @@ def questionnaire():
                                 Menstrual_Irregularity = ?, PCOS_Diagnosis = ?, Dietary_Sugar_Intake = ?, Physical_Activity_Level = ?,
                                 Acne_Severity = ?, Alopecia = ?, Skin_Darkening_Acanthosis = ?, Hirsutism_Score_FG = ?,
                                 LH_mIU_mL = ?, FSH_mIU_mL = ?, LH_FSH_Ratio = ?, Fasting_Glucose_mg_dL = ?, Fasting_Insulin_uIU_mL = ?,
-                                HOMA_IR = ?, Total_Testosterone_ng_dL = ?, Free_Testosterone_pg_mL = ? , Total_Cholesterol_mg_dL = ?, Triglycerides_mg_dL = ?, Target_Nutrient_Vector = ?, Allergens = ?
+                                HOMA_IR = ?, Total_Testosterone_ng_dL = ?, Free_Testosterone_pg_mL = ? , Total_Cholesterol_mg_dL = ?, Triglycerides_mg_dL = ?, Target_Nutrient_Vector = ?
                     WHERE email = ?
                  """, (
                     age, height, weight, bmi, cycle_length, 
@@ -564,7 +560,7 @@ def questionnaire():
                     acne_severity, alopecia, acanthosis, fg_score, 
                     lh_level, fsh_level, lh_fsh_ratio, glucose_level, 
                     insulin_level, homa_ir, total_tes, free_tes, 
-                    cholesterol, triglycerides, vector_json, allergens_string, user_email
+                    cholesterol, triglycerides, vector_json, user_email
                  ))  
              
                  conn.commit()

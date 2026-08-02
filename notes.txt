@@ -16,6 +16,7 @@
 -User consent protocols
 -limitations to nutrients - discussion
 -restaurant latino
+-ALLERGENS COLUMN
 
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X
@@ -82,3 +83,9 @@ HINDUISM:
 features of nutrient vector
 nutrients for vector
 
+ 
+Milk, Egg, Peanut, Soy, Wheat, Tree Nut, Shellfish, Fish Sesame
+
+#Extracting the list of allergens 
+             allergens_list = request.form.getlist("allergens")
+             allergens_string = ",".join(allergens_list) if allergens_list else ""
