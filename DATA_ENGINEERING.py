@@ -180,6 +180,10 @@ def process_raw_file():
     #Apply the nutrient vector logic to each row
     df2['Target_Nutrient_Vector'] = df2.apply(nutrient_vector_2, axis=1)
 
+    #Allergens and diet columns
+    df2['Allergens'] = ""
+    df2['Diet'] = "omnivore" #Defaulting to Omnivore
+
     #Saving the fake credentials, nutrient vectors and unhashed passwords to the file
     df2.to_csv('patientdata_nohash.csv', index=False)
 

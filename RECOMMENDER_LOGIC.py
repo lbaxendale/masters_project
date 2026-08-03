@@ -8,10 +8,6 @@ import matplotlib.pyplot as plt
 from werkzeug.security import generate_password_hash, check_password_hash 
 import seaborn as sns
 import numpy as np
-import string
-import random
-import csv
-import bcrypt
 
 import sqlite3
 import ast
@@ -40,7 +36,6 @@ def populate_db(db_path="patientdb.db"):
     patient_df.to_sql('patientdata', conn, if_exists='replace', index=False)
     conn.close()
 
-
 # -------------------------------------------------------------------
 #Creating the food database with the 5 target nutrients
 #Target nutrients matching to nutrients names in the USDA Nutrition/Food datasets
@@ -49,6 +44,7 @@ def populate_db(db_path="patientdb.db"):
 df_food = pd.read_csv('food.csv')
 df_food_nutrient = pd.read_csv('food_nutrient.csv', low_memory=False)
 df_nutrient = pd.read_csv('nutrient.csv')
+df_category = pd.read_csv('food_category.csv')
 
 #Seperating the target nutrients using the USDA nutrient ids
 target_usda_ids = [291, 646, 304, 309, 325, 326]
@@ -59,7 +55,7 @@ food_data = pd.read_csv('food.csv')
 
 #Filtering for only master food records and filtering out lab tests and sub samples
 valid_data_types=['foundation_food', 'sr_legacy_food']
-food_data = food_data[food_data['data_type'].isin(valid_data_types)]
+food_data = food_data[food_data['data_type'].isin(valid_data_types)].copy()
 
 #Grouping similar foods together
 food_data['short_name'] = food_data['description'].apply(lambda x: ', '.join(str(x).split(',')[:2]))
@@ -73,16 +69,21 @@ df_joined_3 = pd.merge(merge_part_1, food_data, on='fdc_id', how='inner')
 
 #Using the short name to merge duplicate foods
 food_matrix_2 = df_joined_3.pivot_table(
-    index='short_name',
+    index=['short_name', 'food_category_id'],
     columns='name',
     values='amount',
     aggfunc='mean'
-).fillna(0)
+).fillna(0).reset_index() #Bringing the grouped indices back as standard columns
 
-food_matrix_2['Vitamin_D_Total_UG'] = food_matrix_2['Vitamin D2 (ergocalciferol)'] + food_matrix_2['Vitamin D3 (cholecalciferol)']
+#Calculating the total vitamin D
+vit_d2 = food_matrix_2.get('Vitamin D2 (ergocalciferol)', 0)
+vit_d3 = food_matrix_2.get('Vitamin D3 (cholecalciferol)', 0)
+food_matrix_2['Vitamin_D_Total_UG'] = vit_d2 + vit_d3
 
 #Vector for the target nutrients 
 nutrients_5d_order = [
+    'short_name',
+    'food_category_id',
     'Fiber, total dietary', 
     'Fatty acids, total polyunsaturated',
     'Magnesium, Mg',
@@ -90,14 +91,21 @@ nutrients_5d_order = [
     'Zinc, Zn'
 ]
 
-food_matrix_5d = food_matrix_2[nutrients_5d_order]
-
-# New Cosine Similarity Food recommendation engine
-# Names are trapped in the index so need to reset index
-food_matrix_5d = food_matrix_5d.reset_index()
+#Cleaning up final column names before saving
+food_matrix_5d = food_matrix_2[nutrients_5d_order].copy()
 food_matrix_5d.rename(columns={'short_name': 'food_description'}, inplace=True)
-food_matrix_5d.to_csv("food_matrix_5d.csv", index=False)
 
+#Merging with food_category.csv to get the text name of the categories
+food_matrix_5d = pd.merge(
+    food_matrix_5d,
+    df_category[['id', 'description']],
+    left_on='food_category_id',
+    right_on='id',
+    how='left'
+)
+
+#Saving the new matrix containing shortened names AND categories
+food_matrix_5d.to_csv("food_matrix_5d.csv", index=False)
 
 # -------------------------------------------------------------------
 def save_food_to_db(db_path="patientdb.db"):
@@ -117,13 +125,81 @@ def save_food_to_db(db_path="patientdb.db"):
     
     conn.close()
 
+#Nutrient reccomender python logic
+def nutrient_vector_2(patient_record):
+
+    # Set a baseline daily reccomended intake of nutrients
+    magnesium = 320.0 #milligrams
+    fibre = 25.0 #grams
+    PUFA = 12.0 #grams
+    zinc = 7.0 #milligrams 25mg max
+    vitamin_d = 10.0 #micrograms (1000 times smaller than a milligram) max 50ug
+
+    #Retrieving the patient data from user
+    homa_ir = patient_record.get('HOMA_IR') or 0
+    glucose = patient_record.get('Fasting_Glucose_mg_dL') or 0 
+    triglycerides = patient_record.get('Triglycerides_mg_dL') or 0 
+    acne = patient_record.get('Acne_Severity') or 0
+    pcos = patient_record.get('PCOS_Diagnosis') or 0 
+    bmi = patient_record.get('BMI') or 0
+    testosterone = patient_record.get('Total_Testosterone_ng_dL') or 0
+
+    #Fiber reccomendation logic
+    #High HOMA IR or high Fasting Glucose level can indicate insulin resistance
+    #Using a continuous proportional multiplier with 15g as a safety cap  
+    if homa_ir > 1.9 or glucose > 99:
+        fibre_addition = homa_ir - 1.9 if homa_ir > 1.9 else 0
+        fibre += min(15.0, fibre_addition * 1.5)
+
+    #Omega 3 / Polyunsaturated fat reccommendation logic
+    #High triglycerides and the presence of severe acne can indicate high lipids and inflammation
+    #Omega 3 can lower lipid levels and combat skin inflammation
+    #Using a continuous proportional multiplier with 10g as a safety cap
+    if 150 <= triglycerides > 199 and acne == 3: 
+        PUFA_addition = triglycerides - 199
+        PUFA += min(10.0, PUFA_addition * 1.8)
+    elif 150 <= triglycerides > 199 and acne ==2:
+        PUFA_addition = triglycerides - 199
+        PUFA += min(10.0, PUFA_addition * 1.5)
+    elif 150 <= triglycerides > 199 and acne == 1:
+        PUFA_addition = triglycerides - 199
+        PUFA += min(10.0, PUFA_addition * 1.3)
+
+    #Magnesium reccomendation logic
+    #Magnesium can support insulin resistance and hormonal imbalance
+    #Using a continuous proportional multiplier with 80mg as a safety cap
+    if homa_ir > 1.9 and pcos == 1:
+        magnesium_addition = homa_ir - 1.9
+        magnesium += min(80, magnesium_addition * 10)
+
+    #Vitamin D recommendation logic
+    #Vitamin D can support patients with hormonal imbalance, insulin resistance and hirsutism
+    #Using a continuous proportional multiplier with 80mg as a safety cap
+    if bmi > 25:
+        vitamin_d_addition = bmi - 25
+        vitamin_d += min(40, vitamin_d_addition * 2.5)
+
+    #Zinc recommendation logic
+    #Zinc can support PCOS patients with hirsutism, alopecia
+    if testosterone > 46:
+        zinc_addition = testosterone - 46
+        zinc += min(18, zinc_addition * 1.5)
+
+    #Round the nutrient figures
+    return [round(fibre, 1), round(PUFA, 1), round(magnesium, 1), round(vitamin_d, 1), round(zinc, 1)]
+
 def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     conn = sqlite3.connect(db_path)
 
     #Retrieving user vector
     cursor = conn.cursor()
-    cursor.execute("SELECT Target_Nutrient_Vector FROM patientdata WHERE lower(email) = lower(?)", (user_email,))
+    cursor.execute("""
+        SELECT Target_Nutrient_Vector, Allergens, Diet 
+        FROM patientdata 
+        WHERE lower(email) = lower(?) 
+    """, (user_email,))
     row = cursor.fetchone()
+
     if not row or not row[0]:
         conn.close()
         return None
@@ -133,6 +209,9 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     #Allergens list
     #Parsing the comma-seperated string back into a Python list
     patient_allergens = row[1].split(',') if row[1] else []
+
+    #User diet
+    user_diet = (row[2] or "omnivore").lower().strip()
 
     #Retrieving the names of foods to attach them to the matrix
     #Loading the saved food_matrix_5d table 
@@ -150,6 +229,21 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
 
     #Creating copies of databases for filtering
     filtered_food_db = food_df.copy()
+
+    #------------------------------------------------
+    #Dietary restriction filtering logic
+    #Mapping diets to the USDA category IDs to exclude
+    diet_exclusions = {
+        'vegetarian': [5, 7, 10, 13, 15, 17], #Excluding Pork, Beef, Fish/Shellfish, Lamb/Veal/Game, Sausages/Luncheon
+        'vegan': [1, 5, 7, 10, 13, 15, 17], #Excluding Dairy/Egg, Poultry, + all meat and seafood
+        'pesketarian': [5, 7, 10, 13, 17], #Excluding Sausages/Luncheon, Pork, Beef, Lamb/Veal/Game (Keeps Fish 1500 & Poultry 500)
+        'halal_diet': [7, 10] #Excluding Pork Products, Sausages/Luncheon Meats (contains non-halal gelatin/pork)
+    }
+
+    #If a user follows a specific restricted diet, filter out those category IDs
+    if user_diet in diet_exclusions:
+        excluded_category_ids = diet_exclusions[user_diet]
+        filtered_food_db = filtered_food_db[~filtered_food_db['food_category_id'].isin(excluded_category_ids)]
 
     #Filtering logic for allergens
     #All keywords to filter out allergens out of the  
@@ -236,10 +330,3 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     top_foods = results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
     return top_foods.to_dict(orient='records')
 
-#df = pd.read_csv('patientdata.csv')
-
-#def hash_password(password):
-#    pwd_bytes = password.encode('utf-8')
-#    salt = bcrypt.gensalt()
-#    hashed = bcrypt.hashpw(pwd_bytes, salt)
-#    return hashed.decode('utf-8')

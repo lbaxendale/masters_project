@@ -58,6 +58,7 @@
             name="height"
             min="120"
             max="220"
+            step="0.01"
             title="Please enter your height." 
             required
             value="{{ user.Height_cm if user and user.Height_cm != None else '' }}">
@@ -71,6 +72,7 @@
             name="weight"
             min="20"
             max="200"
+            step="0.01"
             title="Please enter your weight." 
             required
             value="{{ user.Weight_kg if user and user.Weight_kg != None else '' }}">
@@ -79,11 +81,11 @@
         <div class="form-group"> 
           <label for="diet">What diet do you follow?</label>
           <select name ="diet" id="diet">
-            <option value="omnivore">Omnivore</option>
-            <option value="pesketarian">Pesketarian</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="vegan">Vegan</option>
-            <option value="halal_diet">Halal diet</option>
+            <option value="omnivore" {% if user and user.Diet == 'omnivore' %}checked{% endif %}>Omnivore</option>
+            <option value="pesketarian" {% if user and user.Diet == 'pesketarian' %}checked{% endif %}>Pesketarian</option>
+            <option value="vegetarian" {% if user and user.Diet == 'vegetarian' %}checked{% endif %}>Vegetarian</option>
+            <option value="vegan" {% if user and user.Diet == 'vegan' %}checked{% endif %}>Vegan</option>
+            <option value="halal_diet" {% if user and user.Diet == 'halal_diet' %}checked{% endif %}>Halal diet</option>
           </select>
         </div>
 
@@ -218,6 +220,7 @@
             name="lh_level"
             min="1"
             max="30"
+            step="0.01"
             value="{{ user.LH_mIU_mL if user and user.LH_mIU_mL != None else '' }}">
         </div>
 
@@ -229,6 +232,7 @@
             name="fsh_level"
             min="1"
             max="30"
+            step="0.01"
             value="{{ user.FSH_mIU_mL if user and user.FSH_mIU_mL != None else '' }}">
         </div>
 
@@ -240,6 +244,7 @@
             name="glucose_level"
             min="30"
             max="150"
+            step="0.01"
             value="{{ user.Fasting_Glucose_mg_dL if user and user.Fasting_Glucose_mg_dL != None else '' }}">
         </div>
 
@@ -251,6 +256,7 @@
             name="insulin_level"
             min="1"
             max="40"
+            step="0.01"
             value="{{ user.Fasting_Insulin_uIU_mL if user and user.Fasting_Insulin_uIU_mL != None else '' }}">
         </div>
 
@@ -262,6 +268,7 @@
             name="total_tes"
             min="1"
             max="120"
+            step="0.01"
             value="{{ user.Total_Testosterone_ng_dL if user and user.Total_Testosterone_ng_dL != None else '' }}">
         </div>
 
@@ -273,6 +280,7 @@
             name="free_tes"
             min="1"
             max="20"
+            step="0.01"
             value="{{ user.Free_Testosterone_pg_mL if user and user.Free_Testosterone_pg_mL != None else '' }}">
         </div>
 
@@ -284,6 +292,7 @@
             name="cholesterol"
             min="90"
             max="350"
+            step="0.01"
             value="{{ user.Total_Cholesterol_mg_dL if user and user.Total_Cholesterol_mg_dL != None else '' }}">
         </div>
 
@@ -295,6 +304,7 @@
             name="triglycerides"
             min="90"
             max="350"
+            step="0.01"
             value="{{ user.Triglycerides_mg_dL if user and user.Triglycerides_mg_dL != None else '' }}">
         </div>
 

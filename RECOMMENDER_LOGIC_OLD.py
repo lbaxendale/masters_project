@@ -233,3 +233,4 @@ def hash_password(password):
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(pwd_bytes, salt)
     return hashed.decode('utf-8')
+

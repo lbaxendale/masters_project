@@ -115,6 +115,28 @@
             <td class="value-col">{{ user.BMI if user.BMI else 'N/A' }}</td>
           </tr>
           <tr>
+            <td class="label-col">Diet</td>
+            <td class="value-col">
+              {% if user.Diet %}
+              <!-- Adding the 'replace' filter to remove the underscore in 'halal_diet', and 'title' capitalises it -->
+                {{ user.Diet | replace('-', ' ') | title }}
+              {% else %}
+                N/A  
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-col">Allergens</td>
+            <td class="value-col">
+              {% if user.Allergens %}
+              <!-- Adding a space after commas and capitalising words -->
+                {{ user.Allergens | replace(',', ', ') | replace('_', ' ') | title }}
+              {% else %}
+                N/A  
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
             <td class="label-col">Cycle Length (Days)</td>
             <td class="value-col">{{ user.Menstrual_Cycle_Length_days if user.Menstrual_Cycle_Length_days else 'N/A' }}</td>
           </tr>

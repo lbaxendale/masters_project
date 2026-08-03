@@ -24,10 +24,6 @@ import csv
 from DATA_ENGINEERING import process_raw_file
 from RECOMMENDER_LOGIC import populate_db, save_food_to_db
 
-#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-#CLEAN_DATA_PATH = os.path.join(BASE_DIR, 'cleandata.csv')
-#PATIENT_DATA_PATH = os.path.join(BASE_DIR, 'patientdata.csv')
-
 #Set Seed
 SEED_VAL = 55
 random.seed(SEED_VAL)
@@ -45,4 +41,3 @@ def init_db():
 
     #Saving the food matrix to the database
     save_food_to_db()
-

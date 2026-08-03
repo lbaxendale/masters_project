@@ -4,18 +4,22 @@
 -Dietary requirements
 -Flash messages
 -Implementation 
--Search top 10 by category
--Search by recommended nutrient
--Patients with elevated fiber needs are being recommended foods with no fiber. 
+-Category diversity
 -Display nutrition vector?
 -Retry everything with multiple imputation.
--Analyse food data, categories, nutrients
--table of figures
 -User consent protocols
 -limitations to nutrients - discussion
 -restaurant latino?
 -vitamin d
 -nutrient vector 2 error in working_app?
+-food data shortened names and categories
+-Sugar level and exercise level
+-Questionnaire submission success page
+-check nutrition vector logic for magnesium
+-check that updating the nutrition vector works
+-update personal info view
+-accept decimals in input
+-null for allergeies if no allergies?
 
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X

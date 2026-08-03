@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 #Other python files
 from DATABASE_CREATION import init_db
-from RECOMMENDER_LOGIC import get_recommendations
+from RECOMMENDER_LOGIC import get_recommendations, nutrient_vector_2
 import json
 
 import sqlite3
@@ -450,6 +450,7 @@ def questionnaire():
         age = (request.form.get("age") or "").strip()
         height = (request.form.get("height") or "").strip()
         weight = (request.form.get("weight") or "").strip()
+        diet = (request.form.get("diet") or "omnivore").strip()
         cycle_length = (request.form.get("cycle_length") or "").strip()
         sugar_intake = (request.form.get("sugar_intake") or "").strip()
         physical_activity = (request.form.get("physical_activity") or "").strip()
@@ -556,15 +557,16 @@ def questionnaire():
                                 Menstrual_Irregularity = ?, PCOS_Diagnosis = ?, Dietary_Sugar_Intake = ?, Physical_Activity_Level = ?,
                                 Acne_Severity = ?, Alopecia = ?, Skin_Darkening_Acanthosis = ?, Hirsutism_Score_FG = ?,
                                 LH_mIU_mL = ?, FSH_mIU_mL = ?, LH_FSH_Ratio = ?, Fasting_Glucose_mg_dL = ?, Fasting_Insulin_uIU_mL = ?,
-                                HOMA_IR = ?, Total_Testosterone_ng_dL = ?, Free_Testosterone_pg_mL = ? , Total_Cholesterol_mg_dL = ?, Triglycerides_mg_dL = ?, Target_Nutrient_Vector = ?, Allergens = ?
+                                HOMA_IR = ?, Total_Testosterone_ng_dL = ?, Free_Testosterone_pg_mL = ? , Total_Cholesterol_mg_dL = ?, 
+                                Triglycerides_mg_dL = ?, Target_Nutrient_Vector = ?, Allergens = ?, Diet = ?
                     WHERE email = ?
                  """, (
                     age, height, weight, bmi, cycle_length, 
                     menstrual_irregularity, pcos_diagnosis, sugar_intake, physical_activity,
-                    acne_severity, alopecia, acanthosis, hirsutism, fg_score, 
+                    acne_severity, alopecia, acanthosis, fg_score, 
                     lh_level, fsh_level, lh_fsh_ratio, glucose_level, 
                     insulin_level, homa_ir, total_tes, free_tes, 
-                    cholesterol, triglycerides, vector_json, allergens_string, user_email
+                    cholesterol, triglycerides, vector_json, allergens_string, diet, user_email
                  ))  
              
                  conn.commit()
