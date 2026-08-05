@@ -1,25 +1,17 @@
 -Filter feature for foods: view 10, view 20, view 30
 -Pagination
 
--Dietary requirements
 -Flash messages
 -Implementation 
 -Category diversity
 -Display nutrition vector?
--Retry everything with multiple imputation.
 -User consent protocols
 -limitations to nutrients - discussion
--restaurant latino?
--vitamin d
--nutrient vector 2 error in working_app?
--food data shortened names and categories
--Sugar level and exercise level
--Questionnaire submission success page
+-restaurant latino? - does not provide much valuable information
+-vitamin d !!!
+-Sugar level and exercise level edit questions
 -check nutrition vector logic for magnesium
--check that updating the nutrition vector works
--update personal info view
--accept decimals in input
--null for allergeies if no allergies?
+-null for allergies if no allergies?
 
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X
