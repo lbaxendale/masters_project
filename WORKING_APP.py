@@ -470,6 +470,7 @@ def questionnaire():
         free_tes = parse_optional(request.form.get("free_tes" or ""))
         cholesterol = parse_optional(request.form.get("cholesterol" or ""))
         triglycerides = parse_optional(request.form.get("triglycerides" or ""))
+        vitamin_d_level = parse_optional(request.form.get("vit_d" or ""))
 
         #Mapping yes/no radio button answers to 1/0 for the database
         menstrual_irregularity = 1 if request.form.get("menstrual_irregularity") == "Yes" else 0
@@ -558,7 +559,7 @@ def questionnaire():
                                 Acne_Severity = ?, Alopecia = ?, Skin_Darkening_Acanthosis = ?, Hirsutism_Score_FG = ?,
                                 LH_mIU_mL = ?, FSH_mIU_mL = ?, LH_FSH_Ratio = ?, Fasting_Glucose_mg_dL = ?, Fasting_Insulin_uIU_mL = ?,
                                 HOMA_IR = ?, Total_Testosterone_ng_dL = ?, Free_Testosterone_pg_mL = ? , Total_Cholesterol_mg_dL = ?, 
-                                Triglycerides_mg_dL = ?, Target_Nutrient_Vector = ?, Allergens = ?, Diet = ?
+                                Triglycerides_mg_dL = ?, Target_Nutrient_Vector = ?, Allergens = ?, Diet = ?, Vitamin_D_ng_mL = ?
                     WHERE email = ?
                  """, (
                     age, height, weight, bmi, cycle_length, 
@@ -566,7 +567,7 @@ def questionnaire():
                     acne_severity, alopecia, acanthosis, fg_score, 
                     lh_level, fsh_level, lh_fsh_ratio, glucose_level, 
                     insulin_level, homa_ir, total_tes, free_tes, 
-                    cholesterol, triglycerides, vector_json, allergens_string, diet, user_email
+                    cholesterol, triglycerides, vector_json, allergens_string, diet, vitamin_d_level, user_email
                  ))  
              
                  conn.commit()

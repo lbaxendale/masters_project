@@ -8,10 +8,7 @@
 -User consent protocols
 -limitations to nutrients - discussion
 -restaurant latino? - does not provide much valuable information
--vitamin d !!!
--Sugar level and exercise level edit questions
--check nutrition vector logic for magnesium
--null for allergies if no allergies?
+-SEED IN OTHER FILES
 
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X

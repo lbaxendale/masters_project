@@ -46,6 +46,7 @@ def process_raw_file():
         'Acne_Severity',
         'Alopecia',
         'Skin_Darkening_Acanthosis',
+        'Vitamin_D_ng_mL'
     ]
 
     df2 = df1[essential].copy()
@@ -58,13 +59,14 @@ def process_raw_file():
         'LH_mIU_mL',
         'Free_Testosterone_pg_mL',
         'Triglycerides_mg_dL',
+        'Vitamin_D_ng_mL'
     ]
 
     #Converting negative values to nan
     df2[cols] = df2[cols].mask(df2[cols] < 0, np.nan)
 
     #Converting NaN values to median values
-    for col in ['Fasting_Insulin_uIU_mL', 'HOMA_IR', 'LH_mIU_mL', 'Free_Testosterone_pg_mL', 'Triglycerides_mg_dL',]:
+    for col in ['Fasting_Insulin_uIU_mL', 'HOMA_IR', 'LH_mIU_mL', 'Free_Testosterone_pg_mL', 'Triglycerides_mg_dL', 'Vitamin_D_ng_mL']:
         col_median = df2[col].median()
         df2[col] = df2[col].fillna(col_median)
 
@@ -157,17 +159,21 @@ def process_raw_file():
             magnesium_addition = patient_record['HOMA_IR'] - 1.9
             magnesium += min(80, magnesium_addition * 10)
 
-        if patient_record['HOMA_IR'] > 1.9 and patient_record['PCOS_Diagnosis'] == 1:
-            magnesium_addition_2 = patient_record['HOMA_IR'] - 1.9
-            magnesium += min(80, magnesium_addition_2 * 7.5)
-
+        if patient_record['HOMA_IR'] > 1.9 and patient_record['PCOS_Diagnosis'] == 0:
+                    magnesium_addition_2 = patient_record['HOMA_IR'] - 1.9
+                    magnesium += min(80, magnesium_addition_2 * 7.5)
+            
         #Vitamin D recommendation logic
         #Vitamin D can support patients with hormonal imbalance, insulin resistance and hirsutism
         #Using a continuous proportional multiplier with 80mg as a safety cap
-        if patient_record['BMI'] > 25:
+        if patient_record['BMI'] > 25 and patient_record['Vitamin_D_ng_mL'] < 10:
             vitamin_d_addition = patient_record['BMI'] - 25
             vitamin_d += min(40, vitamin_d_addition * 2.5)
-
+    
+        if patient_record['BMI'] > 25 and patient_record['Vitamin_D_ng_mL'] < 20:
+                vitamin_d_addition = patient_record['BMI'] - 25
+                vitamin_d += min(40, vitamin_d_addition * 1.5)
+    
         #Zinc recommendation logic
         #Zinc can support PCOS patients with hirsutism, alopecia
         if patient_record['Total_Testosterone_ng_dL'] > 46:

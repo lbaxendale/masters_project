@@ -143,6 +143,7 @@ def nutrient_vector_2(patient_record):
     pcos = patient_record.get('PCOS_Diagnosis') or 0 
     bmi = patient_record.get('BMI') or 0
     testosterone = patient_record.get('Total_Testosterone_ng_dL') or 0
+    vitamin_d_level = patient_record.get('Vitamin_D_ng_mL') or 0
 
     #Fiber reccomendation logic
     #High HOMA IR or high Fasting Glucose level can indicate insulin resistance
@@ -172,12 +173,22 @@ def nutrient_vector_2(patient_record):
         magnesium_addition = homa_ir - 1.9
         magnesium += min(80, magnesium_addition * 10)
 
+    if homa_ir > 1.9 and pcos == 0:
+        magnesium_addition = homa_ir - 1.9
+        magnesium += min(80, magnesium_addition * 7.5)
+
+
     #Vitamin D recommendation logic
     #Vitamin D can support patients with hormonal imbalance, insulin resistance and hirsutism
     #Using a continuous proportional multiplier with 80mg as a safety cap
-    if bmi > 25:
+    if bmi > 25 and vitamin_d_level < 10:
         vitamin_d_addition = bmi - 25
         vitamin_d += min(40, vitamin_d_addition * 2.5)
+
+    if bmi > 25 and 10 <= vitamin_d_level < 20:
+        vitamin_d_addition = bmi - 25
+        vitamin_d += min(40, vitamin_d_addition * 1.5)
+    
 
     #Zinc recommendation logic
     #Zinc can support PCOS patients with hirsutism, alopecia
