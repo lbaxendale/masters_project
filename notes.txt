@@ -1,16 +1,18 @@
 -Filter feature for foods: view 10, view 20, view 30
 -Pagination
 
--Flash messages
 -Implementation 
 -Category diversity
 -Display nutrition vector?
 -User consent protocols
--limitations to nutrients - discussion
--restaurant latino? - does not provide much valuable information
 -SEED IN OTHER FILES
--LESLEY METHODOLOGY FEEDBACK: Hi Lily, I've had a read through and left a couple of comments on the document.  I think you need to add a small part to each section that says what it is that you are doing and why it's important, rather than launching straight into what you did.
-I think there should also be an ethical section in here, unless you have it elsewhere?
+-Check references for all sections
+-FIBRE SPELLING.
+
+
+
+
+TESTING USERS BELOW: 
 
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X

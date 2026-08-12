@@ -230,7 +230,7 @@ body {
 }
 
 .flash li {
-    color: red; /*flash message text red*/
+    color: rgb(82, 3, 3); /*flash message text red*/
     font-weight: bold; /*making text bold*/
 }
 

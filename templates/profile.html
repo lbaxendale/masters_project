@@ -47,6 +47,21 @@
     {% block content %}{% endblock %}
 </div>
 
+  <!--To display Flash messages -->
+<div class="flash-message">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash">
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
 
   <main class="dashboard-wrapper">
     <div class="dashboard-content">

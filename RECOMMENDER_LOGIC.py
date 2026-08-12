@@ -145,7 +145,7 @@ def nutrient_vector_2(patient_record):
     testosterone = patient_record.get('Total_Testosterone_ng_dL') or 0
     vitamin_d_level = patient_record.get('Vitamin_D_ng_mL') or 0
 
-    #Fiber reccomendation logic
+    #Fiber recommendation logic
     #High HOMA IR or high Fasting Glucose level can indicate insulin resistance
     #Using a continuous proportional multiplier with 15g as a safety cap  
     if homa_ir > 1.9 or glucose > 99:
@@ -285,19 +285,19 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     target_vit_d = patient_vector[3]
     target_zinc = patient_vector[4]
 
-    #Elevated need for Magnesium
+    #Elevated need for Fibre
     if target_fiber > 25:
-        #Filtering out the foods that don't contain a lot of Zinc
+        #Filtering out the foods that don't contain a lot of Fibre
         filtered_food_db = filtered_food_db[filtered_food_db['fiber_g'] > 0.5]
 
-    #Elevated need for Magnesium
+    #Elevated need for PUFA
     if target_pufa > 12:
-        #Filtering out the foods that don't contain a lot of Zinc
+        #Filtering out the foods that don't contain a lot of PUFA
         filtered_food_db = filtered_food_db[filtered_food_db['pufa_g'] > 0.5]
 
     #Elevated need for Magnesium
     if target_magnesium > 320:
-        #Filtering out the foods that don't contain a lot of Zinc
+        #Filtering out the foods that don't contain a lot of Magnesium
         filtered_food_db = filtered_food_db[filtered_food_db['magnesium_mg'] > 0.5]
 
     #Elevated need for vitamin D

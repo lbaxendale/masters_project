@@ -258,3 +258,22 @@ personalised-message ul {
     margin-bottom: 10px;
     line-height: 1.5;
 }
+
+.flash-message {
+    text-align: center; /*align flash messages in center*/
+}
+
+.flash {
+    list-style: none; /*to remove bullet points*/
+    padding: 0;
+    margin: 0;
+}
+
+.flash li {
+    color: rgb(82, 3, 3); /*flash message text red*/
+    font-weight: bold; /*making text bold*/
+}
+
+.error {
+    color: red;
+}

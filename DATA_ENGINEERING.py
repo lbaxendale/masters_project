@@ -66,7 +66,8 @@ def process_raw_file():
     df2[cols] = df2[cols].mask(df2[cols] < 0, np.nan)
 
     #Converting NaN values to median values
-    for col in ['Fasting_Insulin_uIU_mL', 'HOMA_IR', 'LH_mIU_mL', 'Free_Testosterone_pg_mL', 'Triglycerides_mg_dL', 'Vitamin_D_ng_mL']:
+    for col in ['Fasting_Insulin_uIU_mL', 'HOMA_IR', 'LH_mIU_mL', 
+                'Free_Testosterone_pg_mL', 'Triglycerides_mg_dL', 'Vitamin_D_ng_mL']:
         col_median = df2[col].median()
         df2[col] = df2[col].fillna(col_median)
 
