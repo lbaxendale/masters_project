@@ -5,17 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import itertools
 
-#COVERAGE, INTRA LIST, INTER LIST, NUTREINT CONTRI
-
-# User Coverage = The percentage of users for whom the system is able to generate a valid top-N
-# recommendation list
-
-# Inter-List Diversity = Measures how distinct recommendation lists are betweeen different users.
-# High personalisation means that User A receives a different set of items than User B.
-
-# Precision = The fraction of recommended items in the top-10 list that are relevant.
-
-# Nutrient Contribution Test
 
 
 #--------------Catalog Coverage Quality Metric----------------
@@ -192,13 +181,79 @@ def inter_list_diversity(patient_df, food_db, vector_function, recommender_funct
     #Personalisation = (1 - overlap) x 100
     personalisation_score = (1.0 - average_overlap) * 100
 
-    print("System Personalisation (Inter-List Diversity")
+    print("System Personalisation Inter-List Diversity")
     print(f"Total Patient Pairs Compared: {len(overlaps)}")
     print(f"Average Personalisation Score: {personalisation_score:.2f}%")
 
     return personalisation_score
 
+#--------------Nutrient Contribution Metric----------------
+#Calculates the percentage of a patient's target nutrients needs are met by the top N foods.
 
+def nutrient_contribution_test(patient_df, food_db, vector_function, recommender_function, food_scaled_db=None, scalerobj=None, top_n=10):
+    #Retrieve order of nutrients
+    nutrients_5d_order = [
+            'Fiber, total dietary', 
+            'Fatty acids, total polyunsaturated',
+            'Magnesium, Mg',
+            'Vitamin_D_Total_UG',
+            'Zinc, Zn'
+    ]
+
+    #Dictionaries to track the percentages across all patients
+    nutrient_fulfillment = {
+        'Fiber': [],
+        'PUFAs': [],
+        'Magnesium':[],
+        'Vitamin D': [],
+        'Zinc': []
+    }
+
+    for index, patient_record in patient_df.iterrows():
+        #Generating vector and recommendations
+        patient_vector = vector_function(patient_record)
+
+        #Passing the nutrient vectors into the Cosine Similarity recommender logic
+        #Returning the top 10 foods recommended to each patient
+        if food_scaled_db is not None and scalerobj is not None:
+            top_foods_df = recommender_function(patient_vector, food_db, food_scaled_db, scalerobj, top_n=top_n)
+        else:
+            top_foods_df = recommender_function(patient_vector, food_db, top_n=top_n)
+
+        #Skipping algorithm if not enough foods to compare
+        if top_foods_df is None or top_foods_df.empty:
+            continue
+
+        #Add all the actual nutrients provided by the top N recommended foods
+        provided_nutrients = top_foods_df[nutrients_5d_order].sum().values
+
+        #Calculating the percentage of the target that was met for each nutrient
+        for i, key in enumerate(nutrient_fulfillment.keys()):
+            target = patient_vector[i]
+            provided = provided_nutrients[i]
+
+            if target > 0:
+                fulfillment = ( provided / target) * 100
+            else: 
+                fulfillment = 100.0 #To prevent division by zero
+                #There is baseline of nutrients incase
+
+            nutrient_fulfillment[key].append(fulfillment)
+
+    #Calculating the system averages across all 468 patients
+    print("Nutrient Contribution Test (Relevance)")
+    print(f"Average fulfillment of daily targets by the Top-{top_n} recommendations:") 
+
+    final_scores = {}
+    for key, values in nutrient_fulfillment.items():
+        avg_score = np.mean(values)
+        final_scores[key] = avg_score
+        print(f"- {key}: {avg_score:.2f}%")
+
+    return final_scores
+
+            
+        
 
 
 

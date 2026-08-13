@@ -1,30 +1,20 @@
 -Baseline food recommendation for lack of clinical data
 
--Category diversity
-
 -User consent protocols
 
 -SEED IN OTHER FILES
 -Check references for all sections
--FIBRE SPELLING.
--CATALOGUE SPELLING.
--TEST FOR DIETS.
-TEST FOR VEGETARIANS.
 
-LOAD DATA
-FILTER FOOD SAMPLES OUT OF IT
+-FIBRE SPELLING.EASY
+-CATALOGUE SPELLING.EASY
 
-creating copy of modelling file and removing metric functions
-
-IF/ELIF 3 NUTRIENT VECTOR & UNSCALED CS
-IF/ELIF 3 NUTRIENT VECTOR & SCALED CS
-MULTIPLIER 5 NUTRIENT VECTOR & SCALED CS 
-MULTIPLIER 5 NUTRIENT VECTOR & SCALED CS 
+-TEST FOR DIETS.MID
+-TEST FOR VEGETARIANS.MID
+-APP LOGIC TESTS.
 
 TEST PATIENTS.
 
 TESTING USERS BELOW: 
-
 email	password
 christopher.sampson0@example.com	lztMkxMlT8*X
 edward.stevenson1@example.com	X#ZO2&fGfD$b
