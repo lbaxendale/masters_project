@@ -45,21 +45,6 @@
     {% block content %}{% endblock %}
 </div>
 
-    <!--Flash messages to show any errors in input validation -->
-<div class="flash-message">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul class="flash">
-          {% for category, message in messages %}
-            <li class="flash-{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
-    {% block content %}{% endblock %}
-</div>
-
   <main class="login-wrapper">
     <div class="login-container">
       <h1>Login</h1>
