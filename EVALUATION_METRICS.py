@@ -5,8 +5,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import itertools
 
-
-
 #--------------Catalog Coverage Quality Metric----------------
 # Catalogue Coverage = (Counter of Unique Food Items Recommended / Total items in Catalogue) x 100
 

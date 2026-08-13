@@ -4,7 +4,7 @@ import unittest
 import sqlite3
 import re
 from RECOMMENDER_LOGIC import nutrient_vector_2
-from WORKING_APP import app
+from WORKING_APP import app, generate_nutrition_message
 
 
 #----------Testing Application Routes------------
@@ -173,3 +173,60 @@ class TestValidationPatterns(unittest.TestCase):
         print("Test Passed: Password validation is working correctly.")
 
 #----------Testing Application Logic------------
+
+# ---Personalised Nutrition Message Generator---
+#Testing that raw mathematical input is translated into dietary advice
+
+class TestApplicationLogic(unittest.TestCase):
+
+    #Test 10: Testing the Baseline Nutrition Message
+    def test_baseline_message(self):
+        #Testing vector at baseline nutrient levels
+        #Order: Fibre, PUFA, Magnesium, Vitamin D, Zinc
+        baseline_vector = [25.0, 12.0, 320.0, 10.0, 7.0]
+
+        #Expected message for baseline level users
+        expected_message = "Nutrifem suggests a balanced baseline diet to safely maintain your current metabolic and hormonal health."
+
+        #Running the function
+        result = generate_nutrition_message(baseline_vector)
+
+        #Print that the result matches the expected message
+        self.assertEqual(result, expected_message)
+
+    #Test 11: Testing Elevated Needs Nutrition Messages
+    def test_elevated_messages(self):
+
+        #Vector that exceeds all 5 nutrient baseline levels
+        elevated_needs_vector = [30.0, 15.0, 400.0, 20.0, 10.0]
+
+        #Running the function
+        result = generate_nutrition_message(elevated_needs_vector)
+
+        #Asserting that it returns a list instead of a single string
+        self.assertIsInstance(result, list)
+
+        #Asserting that exactly 5 messages are generated
+        self.assertEqual(len(result), 5)
+
+        #Assserting specific strings that were correctly appended to the list
+        self.assertIn("Increased fiber take: this can help manage blood glucose spikes and support insulin sensitivity.")
+        self.assertIn("Extra Zinc: this can help manage androgen related symptoms like acne or hair loss.")
+
+        print("Test Passed: Elevated nutrition messages generated correctly.")
+
+
+# ---Clinical Mathematical Edge Cases---
+# For Markers such as BMI, HOMA-IR
+
+# 1. Testing Division by Zero
+
+# 2. Testing BMI calculation accuracy
+
+# ---Test Nutrient Vector Function---
+#Testing that a specific patient profile generates the expected mathematical vector
+
+#Mock clinical data dictionary
+
+# ---Password Hashing Security---
+#Testing that passwords are encrypted and stored as hashed passwords instead of plain text

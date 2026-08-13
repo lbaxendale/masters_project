@@ -245,10 +245,10 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     #Dietary restriction filtering logic
     #Mapping diets to the USDA category IDs to exclude
     diet_exclusions = {
-        'vegetarian': [5, 7, 10, 13, 15, 17], #Excluding Pork, Beef, Fish/Shellfish, Lamb/Veal/Game, Sausages/Luncheon
-        'vegan': [1, 5, 7, 10, 13, 15, 17], #Excluding Dairy/Egg, Poultry, + all meat and seafood
-        'pesketarian': [5, 7, 10, 13, 17], #Excluding Sausages/Luncheon, Pork, Beef, Lamb/Veal/Game (Keeps Fish 1500 & Poultry 500)
-        'halal_diet': [7, 10] #Excluding Pork Products, Sausages/Luncheon Meats (contains non-halal gelatin/pork)
+        'vegetarian': [5, 7, 10, 13, 15, 17, 25], #Excluding Pork, Beef, Fish/Shellfish, Lamb/Veal/Game, Sausages/Luncheon, restaurant foods with possible hidden animal fats/broths
+        'vegan': [1, 5, 7, 10, 13, 15, 17, 25], #Excluding Dairy/Egg, Poultry, + all meat and seafood, restaurant foods with possible hidden animal fats/broths
+        'pesketarian': [5, 7, 10, 13, 17, 25], #Excluding Sausages/Luncheon, Pork, Beef, Lamb/Veal/Game (Keeps Fish 1500 & Poultry 500), restaurant foods with possible hidden animal fats/broths
+        'halal_diet': [7, 10, 25] #Excluding Pork Products, Sausages/Luncheon Meats (contains non-halal gelatin/pork), restaurant foods with possible hidden animal fats/broths
     }
 
     #If a user follows a specific restricted diet, filter out those category IDs
@@ -340,4 +340,8 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     #Returning the top N items as a list of dictionaries for Jinja2 HTML rendering
     top_foods = results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
     return top_foods.to_dict(orient='records')
+
+# Baseline food recommender for profile with lack of clincal data
+# Incase user opts out of entering the optional data
+# Recommendations with use baseline nutrient levels, BMI, Menstrual Cycle data & Physical symptoms
 
