@@ -1,15 +1,27 @@
--Filter feature for foods: view 10, view 20, view 30
--Pagination
+-Baseline food recommendation for lack of clinical data
 
--Implementation 
 -Category diversity
--Display nutrition vector?
+
 -User consent protocols
+
 -SEED IN OTHER FILES
 -Check references for all sections
 -FIBRE SPELLING.
--SHORTEN METHODOLOGY
--SHORTEN IMPLEMENTATION
+-CATALOGUE SPELLING.
+-TEST FOR DIETS.
+TEST FOR VEGETARIANS.
+
+LOAD DATA
+FILTER FOOD SAMPLES OUT OF IT
+
+creating copy of modelling file and removing metric functions
+
+IF/ELIF 3 NUTRIENT VECTOR & UNSCALED CS
+IF/ELIF 3 NUTRIENT VECTOR & SCALED CS
+MULTIPLIER 5 NUTRIENT VECTOR & SCALED CS 
+MULTIPLIER 5 NUTRIENT VECTOR & SCALED CS 
+
+TEST PATIENTS.
 
 TESTING USERS BELOW: 
 
