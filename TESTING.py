@@ -331,11 +331,45 @@ class TestApplicationLogic(unittest.TestCase):
         self.assertEqual(result_vector, expected_vector)
         print("Test Passed: Nutrient vector calculates proportional multipliers accurately.")
 
+    #----Test 17: Testing Patient profile with only Proxy data----
+    def test_nutrient_vector_proxy_only(self):
+        #Creating a patient profile missing all the optional clinical data, but severe symptoms
+        proxy_patient = {
+            'HOMA_IR': None,
+            'Fasting_Glucose_mgl_dL': None,
+            'Triglycerides_mgl_dL': None,
+            'Vitamin_D_ng_mL': None,
+            'Total_Testosterone_ng_dL': None,
+
+            #Physical symptoms as Proxies
+            'BMI': 33.0, #Proxy for fibre and vitamin D
+            'Skin_Darkening_Acanthosis': 1, #Proxy for fibre and magnesium
+            'Acne_Severity': 3, #Proxy for PUFA
+            'PCOS_Diagnosis': 1, #Proxy for magnesium
+            'Menstrual_Irregularity': 1, #Proxy for vitamin D
+            'Alopecia': 1, #Proxy for zinc
+            'Hirsutism_Score_FG': 12.0 #Proxy for zinc
+        }
+
+        #Expected vector calculations
+        #Fibre= 25.0 + 5.0 (Acanthosis) + 3.0 (BMI) = 33.0
+        #PUFA= 12.0 + 6.0 (Acne) = 18.0
+        #Magnesium= 320.0 +40.0 (Acanthosis) + 40.0 (PCOS)= 400.0
+        #Vitamin D= 10.0 + 10.0 (Irregular cycle) + 15.0 (BMI) = 35.0
+        #Zinc: 7.0 = 5.0 (Alopecia) + 3.0p (FG Score) = 14.0
+        expected_vector = [33.0, 18.0, 400.0, 35.0, 14.0]
+
+        #Running vector logic
+        result_vector = nutrient_vector_2(proxy_patient)
+
+        #Asserting the match between the vectors
+        self.assertEqual(result_vector, expected_vector)
+        print("Test Passed: Nutrient vector calculated accurately with only proxy symptom data.")
 
     # ---Password Hashing Security---
     #Testing that passwords are encrypted and stored as hashed passwords instead of plain text
 
-    #Test 17: Testing Password Hashing
+    #Test 18: Testing Password Hashing
     def test_password_hashing(self):
 
         #Create a mock password

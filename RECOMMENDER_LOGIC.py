@@ -125,7 +125,8 @@ def save_food_to_db(db_path="patientdb.db"):
     
     conn.close()
 
-#Nutrient reccomender python logic
+#----------------CLINICAL DATA AND PROXIES NUTRIENT VECTOR LOGIC----------------------
+
 def nutrient_vector_2(patient_record):
 
     # Set a baseline daily reccomended intake of nutrients
@@ -145,56 +146,104 @@ def nutrient_vector_2(patient_record):
     testosterone = patient_record.get('Total_Testosterone_ng_dL') or 0
     vitamin_d_level = patient_record.get('Vitamin_D_ng_mL') or 0
 
-    #Fiber recommendation logic
+    #Other physical symptoms for proxy mapping backup logic
+    acanthosis = patient_record.get('Skin_Darkening_Acanthosis')
+    irregular_cycle = patient_record.get('Menstrual_Irregularity')
+    alopecia = patient_record.get('Alopecia')
+    hirsutism_score = patient_record.get('Hirsutism_Score_FG')
+
+    #------------------Fiber recommendation logic----------------------
     #High HOMA IR or high Fasting Glucose level can indicate insulin resistance
     #Using a continuous proportional multiplier with 15g as a safety cap  
-    if homa_ir > 1.9 or glucose > 99:
-        fibre_addition = homa_ir - 1.9 if homa_ir > 1.9 else 0
-        fibre += min(15.0, fibre_addition * 1.5)
 
-    #Omega 3 / Polyunsaturated fat reccommendation logic
+    if homa_ir is not None or glucose is not None:
+
+        #Safe fallbacks if one is present but the other is not
+        homa_val = homa_ir if homa_ir is not None else 0
+        glucose_val = glucose if glucose is not None else 0 
+
+        #If patient has HOMA IR and Glucose data
+        if homa_val > 1.9 or glucose_val > 99:
+            fibre_addition = max(0, homa_val - 1.9)
+            fibre += min(15.0, fibre_addition * 1.5)
+    
+    else:
+        #Backup proxy is Skin Darkening Acanthosis and BMI
+        if acanthosis == 1:
+            fibre += 5.0
+        if bmi is not None and bmi > 25.0:
+            fibre += min(10.0, (bmi - 25.0) * 0.5)
+
+    #------------------Omega 3 / Polyunsaturated fat reccommendation logic----------------
     #High triglycerides and the presence of severe acne can indicate high lipids and inflammation
     #Omega 3 can lower lipid levels and combat skin inflammation
     #Using a continuous proportional multiplier with 10g as a safety cap
-    if 150 <= triglycerides > 199 and acne == 3: 
-        PUFA_addition = triglycerides - 199
-        PUFA += min(10.0, PUFA_addition * 1.8)
-    elif 150 <= triglycerides > 199 and acne ==2:
-        PUFA_addition = triglycerides - 199
-        PUFA += min(10.0, PUFA_addition * 1.5)
-    elif 150 <= triglycerides > 199 and acne == 1:
-        PUFA_addition = triglycerides - 199
-        PUFA += min(10.0, PUFA_addition * 1.3)
+    if triglycerides is not None:
+        if triglycerides >= 150:
+            trig_addition = triglycerides - 150
+            if acne == 3:
+                PUFA += min(10.0, trig_addition * 1.8)
+            elif acne == 2:
+                PUFA += min(10.0, trig_addition * 1.5)
+            elif acne == 1:
+                PUFA += min(10.0, trig_addition * 1.3)
 
-    #Magnesium reccomendation logic
+    else: 
+        #Backup proxy is Acne
+        if acne == 3:
+            PUFA += 6.0
+        elif acne == 2:
+            PUFA += 3.0
+
+    #-------------------Magnesium reccomendation logic---------------------
     #Magnesium can support insulin resistance and hormonal imbalance
     #Using a continuous proportional multiplier with 80mg as a safety cap
-    if homa_ir > 1.9 and pcos == 1:
-        magnesium_addition = homa_ir - 1.9
-        magnesium += min(80, magnesium_addition * 10)
+    if homa_ir is not None: 
+        if homa_ir > 1.9: 
+            magnesium_addition = homa_ir - 1.9
+            if pcos == 1:
+                magnesium += min(80, magnesium_addition * 10)
+            else:
+                magnesium += min(80, magnesium_addition * 7.5)
 
-    if homa_ir > 1.9 and pcos == 0:
-        magnesium_addition = homa_ir - 1.9
-        magnesium += min(80, magnesium_addition * 7.5)
+    else:
+        #Backup proxy is PCOS diagnosis and Acanthosis
+        if pcos == 1:
+            magnesium += 40.0
+        if acanthosis == 1:
+            magnesium += 40.0
 
 
-    #Vitamin D recommendation logic
+    #-----------------Vitamin D recommendation logic--------------------
     #Vitamin D can support patients with hormonal imbalance, insulin resistance and hirsutism
     #Using a continuous proportional multiplier with 80mg as a safety cap
-    if bmi > 25 and vitamin_d_level < 10:
-        vitamin_d_addition = bmi - 25
-        vitamin_d += min(40, vitamin_d_addition * 2.5)
+    if vitamin_d_level is not None:
+        if bmi is not None and bmi > 25:
+            if vitamin_d_level < 10:
+                vitamin_d += min(40.0, (bmi - 25) * 2.5)
+            elif vitamin_d_level < 20:
+                vitamin_d (40.0, (bmi - 25) * 1.5)
 
-    if bmi > 25 and 10 <= vitamin_d_level < 20:
-        vitamin_d_addition = bmi - 25
-        vitamin_d += min(40, vitamin_d_addition * 1.5)
+    else:
+        #Backup proxy is cycle irregularity and BMI
+        if irregular_cycle == 1:
+            vitamin_d += 10.0
+        if bmi is not None and bmi > 30.0:
+            vitamin_d += 15.0
     
 
-    #Zinc recommendation logic
+    #------------------Zinc recommendation logic---------------------
     #Zinc can support PCOS patients with hirsutism, alopecia
-    if testosterone > 46:
-        zinc_addition = testosterone - 46
-        zinc += min(18, zinc_addition * 1.5)
+    if testosterone is not None: 
+        if testosterone > 46:
+            zinc += min(18.0, (testosterone - 46) * 1.5)
+
+    else:
+        #Backup proxy is Alopecia and Hirsutism FG score
+        if alopecia == 1:
+            zinc += 5.0
+        if hirsutism_score is not None and float(hirsutism_score) > 8.0:
+            zinc += min(10.0, (float(hirsutism_score) - 8.0) * 0.5)
 
     #Round the nutrient figures
     return [round(fibre, 1), round(PUFA, 1), round(magnesium, 1), round(vitamin_d, 1), round(zinc, 1)]
