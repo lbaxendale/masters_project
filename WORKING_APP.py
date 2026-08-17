@@ -489,13 +489,13 @@ def questionnaire():
         #Calculation for the HOMA IR level
         try:
             homa_ir = (insulin_level / glucose_level) / 405
-        except ValueError:
+        except (ValueError, TypeError, ZeroDivisionError):
             homa_ir = None
 
         #Calculation for LH/FSH Ratio
         try: 
             lh_fsh_ratio = lh_level / fsh_level
-        except ValueError: 
+        except (ValueError, TypeError, ZeroDivisionError): 
             lh_fsh_ratio = None
 
         #Using the session ID (user email) to make sure the data is inserted to the record of the logged in user

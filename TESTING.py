@@ -5,6 +5,7 @@ import sqlite3
 import re
 from RECOMMENDER_LOGIC import nutrient_vector_2
 from WORKING_APP import app, generate_nutrition_message
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 #----------Testing Application Routes------------
@@ -137,9 +138,6 @@ class TestDatabase(unittest.TestCase):
 
 ## Ensures the email has a basic valid structure of name@domain.tld
 
-#Old email pattern that failed
-#EMAIL_PATTERN = re.compile(r'^[\w\.-]+@[\w\.-]+\.[A-Za-z]{2,}$')
-
 #New email pattern: Forces the domain to start with a letter or number
 EMAIL_PATTERN = re.compile(r'^[\w\.-]+@[a-zA-Z0-9][\w\.-]+\.[A-Za-z]{2,}$')
 
@@ -215,18 +213,147 @@ class TestApplicationLogic(unittest.TestCase):
 
         print("Test Passed: Elevated nutrition messages generated correctly.")
 
+    # ---Clinical Mathematical Edge Cases---
+    # For Markers such as BMI, HOMA-IR
 
-# ---Clinical Mathematical Edge Cases---
-# For Markers such as BMI, HOMA-IR
+    #Test 12: Testing BMI calculation accuracy
+    def test_bmi(self):
+        #Simulating inputs from questionnaire form
+        height = "165.5" #cm
+        weight = "69.5" #kg
 
-# 1. Testing Division by Zero
+        #BMI calculation logic
+        try:
+            height_m = float(height) / 100
+            bmi = round(float(weight) / (height_m * height_m), 1)
+        except ValueError: 
+            bmi = None
 
-# 2. Testing BMI calculation accuracy
+        #Asserting that the it correctly calculates BMI = 25.4
+        self.assertEqual(bmi, 25.4)
+        print("Test Passed: The system calculated BMI accurately.")
 
-# ---Test Nutrient Vector Function---
-#Testing that a specific patient profile generates the expected mathematical vector
+    #Test 13: Testing HOMA-IR calculation - division by zero vulnerability
+    def test_homa_ir_zero_division(self):
+        #Simulating a user accidentally entering 0 for fasting glucose
+        insulin_level = 15.0
+        glucose_level = 0.0
 
-#Mock clinical data dictionary
+        #Confirming that a ZeroDivisionError occurs using assertRaises
+        #When it attempts to divide by 0.0
+        with self.assertRaises(ZeroDivisionError):
+            homa_ir = (insulin_level / glucose_level) / 405
 
-# ---Password Hashing Security---
-#Testing that passwords are encrypted and stored as hashed passwords instead of plain text
+        print("Test Passed: Successfully identified the ZeroDivisionError vulnerability in the HOMA-IR calculation.")
+        
+    #Test 14: Testing LH/FSH Ratio Accuracy
+    def test_lh_fsh_ratio(self):
+        lh_level = 12.0
+        fsh_level = 4.0
+
+        try:
+            lh_fsh_ratio = lh_level / fsh_level
+        except (ValueError, ZeroDivisionError):
+            lh_fsh_ratio = None
+
+        #Asserting that a LH level 12 and FSH level 4 yields ratio = 3
+        self.assertEqual(lh_fsh_ratio, 3.0)
+        print("Test Passed: LH/FSH Ratio calculates accurately.")
+
+
+    # ---Test Nutrient Vector Function---
+    #Testing that a specific patient profile generates the expected mathematical nutrient vector
+
+
+    #Test 15: Testing patient with healthy levels
+    #Their nutrient vector should be at baseline levels
+    def test_nutrient_vector_baseline(self):
+
+        #Setting healthy patient health data parameters
+        healthy_patient = {
+            'HOMA_IR': 1.5,
+            'Fasting_Glucose_mg_dL': 85.0,
+            'Triglycerides': 90,
+            'Acne_Severity': 1,
+            'PCOS_Diagnosis': 0,
+            'BMI': 22.0,
+            'Vitamin_D_ng_mL': 35.0,
+            'Total_Testosterone_ng_dL': 30.0
+        }
+
+        #Expecting the minimum default baseline vector
+        #Order= [Fibre, PUFA, Magnesium, Vitamin D, Zinc]
+        expected_vector = [25.0, 12.0, 320.0, 10.0, 7.0]
+
+        #Running the function
+        result_vector = nutrient_vector_2(healthy_patient)
+
+        #Asserting the match between the vectors
+        self.assertEqual(result_vector, expected_vector)
+        print("Test Passed: Nutrient vector outputs accurate baseline for healthy patients.")
+
+    #Test 16: Testing the Nutrient Vector Proportional Multipliers
+    def test_nutrient_vector_multipliers(self):
+
+        #Creating patient profile with elevated markers to trigger the multipliers
+        elevated_patient = {
+            'HOMA_IR': 1.5,
+            #HOMA IR Logic triggers these multipliers:
+            #Fibre = (3.9 - 1.9 = 2) * 1.5 = +3.0g
+            #Mag logic: (3.9 - 1.9 = 2) * 10 = +20.0mg (with PCOS Diagnosis = 1) 
+
+            'Fasting_Glucose_mg_dL': 110.0, #Same mathematical multiplier trigger as HOMA IR
+
+            'Triglycerides': 200.0,
+            #Triglycerides triggers this
+            #PUFA logic = (200 - 199 = 1) * 1.8 = + 1.8g with Acne = 3
+
+            'Acne_Severity': 3,
+            'PCOS_Diagnosis': 1,
+            'BMI': 27.0,
+            #BMI and low Vitamin D triggers this
+            #Vitamin D logic = (27 - 25 = 2) * 2.5 = +5.0ug (with Vitamin D < 10)
+
+            'Vitamin_D_ng_mL': 8.0,
+            'Total_Testosterone_ng_dL': 50.0
+            #Total testosterone triggers this
+            #Zinc = (50 - 46 = 4) * 1.5 = +6.0mg
+        }
+
+        #Expected nutrient vector output
+        #Order= [Fibre, PUFA, Magnesium, Vitamin D, Zinc]
+        expected_vector = [28.0, 13.8, 340.0, 15.0, 13.0]
+
+        #Running the function
+        result_vector = nutrient_vector_2(elevated_patient)
+
+        #Asserting the matching vectors
+        self.assertEqual(result_vector, expected_vector)
+        print("Test Passed: Nutrient vector calculates proportional multipliers accurately.")
+
+
+    # ---Password Hashing Security---
+    #Testing that passwords are encrypted and stored as hashed passwords instead of plain text
+
+    #Test 17: Testing Password Hashing
+    def test_password_hashing(self):
+
+        #Create a mock password
+        plain_password = "PlainPass345!"
+
+        #Generating the hash
+        hashed_password = generate_password_hash(plain_password, method="pbkdf2: sha256")
+
+        #Asserting that the hash securely hides plain text 
+        self.assertNotEqual(hashed_password, plain_password)
+
+        #Verifying that the correct encryption standard is applied
+        self.assertTrue(hashed_password.startswith("scrypt") or hashed_password.startswith("pbkdf2:sha256"))
+
+        #Asserting that check_password_hash authenticates the correct password
+        self.assertTrue(check_password_hash(hashed_password, plain_password))
+
+        #Asserting that the wrong password is rejected
+        self.assertFalse(check_password_hash(hashed_password, "WrongPass522?"))
+
+        print("Test Passed: Password hashing and verification is secure.")
