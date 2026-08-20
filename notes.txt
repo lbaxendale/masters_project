@@ -5,6 +5,12 @@
 
 -FIBRE SPELLING.EASY
 -CATALOGUE SPELLING.EASY
+-DATA CONSENT STATEMENT.
+-should I include iteration 1 on catalog coverage graph? 
+-DISCUSSION/RESULTS: recommendations with same category
+-Top 5 foods common to recommendations
+-BANT Nutritional codes of conduct
+-Methodology: bars/plots
 
 
 TESTING USERS BELOW: 
