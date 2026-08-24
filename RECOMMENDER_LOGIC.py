@@ -152,7 +152,7 @@ def nutrient_vector_2(patient_record):
     alopecia = patient_record.get('Alopecia')
     hirsutism_score = patient_record.get('Hirsutism_Score_FG')
 
-    #------------------Fiber recommendation logic----------------------
+    #------------------Fibre recommendation logic----------------------
     #High HOMA IR or high Fasting Glucose level can indicate insulin resistance
     #Using a continuous proportional multiplier with 15g as a safety cap  
 
