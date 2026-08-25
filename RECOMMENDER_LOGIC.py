@@ -127,14 +127,14 @@ def nutrient_vector_2(patient_record):
     vitamin_d = 10.0 #micrograms (1000 times smaller than a milligram) max 50ug
 
     #Retrieving the patient data from user
-    homa_ir = patient_record.get('HOMA_IR') or 0
-    glucose = patient_record.get('Fasting_Glucose_mg_dL') or 0 
-    triglycerides = patient_record.get('Triglycerides_mg_dL') or 0 
+    homa_ir = patient_record.get('HOMA_IR')
+    glucose = patient_record.get('Fasting_Glucose_mg_dL')
+    triglycerides = patient_record.get('Triglycerides_mg_dL')
     acne = patient_record.get('Acne_Severity') or 0
     pcos = patient_record.get('PCOS_Diagnosis') or 0 
-    bmi = patient_record.get('BMI') or 0
-    testosterone = patient_record.get('Total_Testosterone_ng_dL') or 0
-    vitamin_d_level = patient_record.get('Vitamin_D_ng_mL') or 0
+    bmi = patient_record.get('BMI')
+    testosterone = patient_record.get('Total_Testosterone_ng_dL')
+    vitamin_d_level = patient_record.get('Vitamin_D_ng_mL')
 
     #Other physical symptoms for proxy mapping backup logic
     acanthosis = patient_record.get('Skin_Darkening_Acanthosis')

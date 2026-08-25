@@ -208,8 +208,8 @@ class TestApplicationLogic(unittest.TestCase):
         self.assertEqual(len(result), 5)
 
         #Assserting specific strings that were correctly appended to the list
-        self.assertIn("Increased fibre take: this can help manage blood glucose spikes and support insulin sensitivity.")
-        self.assertIn("Extra Zinc: this can help manage androgen related symptoms like acne or hair loss.")
+        self.assertIn("Increased fibre take: this can help manage blood glucose spikes and support insulin sensitivity.", result)
+        self.assertIn("Extra Zinc: this can help manage androgen related symptoms like acne or hair loss.", result)
 
         print("Test Passed: Elevated nutrition messages generated correctly.")
 
@@ -297,16 +297,16 @@ class TestApplicationLogic(unittest.TestCase):
 
         #Creating patient profile with elevated markers to trigger the multipliers
         elevated_patient = {
-            'HOMA_IR': 1.5,
+            'HOMA_IR': 3.9,
             #HOMA IR Logic triggers these multipliers:
             #Fibre = (3.9 - 1.9 = 2) * 1.5 = +3.0g
             #Mag logic: (3.9 - 1.9 = 2) * 10 = +20.0mg (with PCOS Diagnosis = 1) 
 
             'Fasting_Glucose_mg_dL': 110.0, #Same mathematical multiplier trigger as HOMA IR
 
-            'Triglycerides': 200.0,
+            'Triglycerides_mg_dL': 151.0,
             #Triglycerides triggers this
-            #PUFA logic = (200 - 199 = 1) * 1.8 = + 1.8g with Acne = 3
+            #PUFA logic = (151 - 150 = 1) * 1.8 = + 1.8g with Acne = 3
 
             'Acne_Severity': 3,
             'PCOS_Diagnosis': 1,
@@ -352,12 +352,12 @@ class TestApplicationLogic(unittest.TestCase):
         }
 
         #Expected vector calculations
-        #Fibre= 25.0 + 5.0 (Acanthosis) + 3.0 (BMI) = 33.0
+        #Fibre= 25.0 + 5.0 (Acanthosis) + 4.0 (BMI) = 34.0
         #PUFA= 12.0 + 6.0 (Acne) = 18.0
         #Magnesium= 320.0 +40.0 (Acanthosis) + 40.0 (PCOS)= 400.0
         #Vitamin D= 10.0 + 10.0 (Irregular cycle) + 15.0 (BMI) = 35.0
         #Zinc: 7.0 = 5.0 (Alopecia) + 3.0p (FG Score) = 14.0
-        expected_vector = [33.0, 18.0, 400.0, 35.0, 14.0]
+        expected_vector = [34.0, 18.0, 400.0, 35.0, 14.0]
 
         #Running vector logic
         result_vector = nutrient_vector_2(proxy_patient)
@@ -376,7 +376,7 @@ class TestApplicationLogic(unittest.TestCase):
         plain_password = "PlainPass345!"
 
         #Generating the hash
-        hashed_password = generate_password_hash(plain_password, method="pbkdf2: sha256")
+        hashed_password = generate_password_hash(plain_password, method="pbkdf2:sha256")
 
         #Asserting that the hash securely hides plain text 
         self.assertNotEqual(hashed_password, plain_password)
