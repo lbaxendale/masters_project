@@ -1,15 +1,12 @@
 #Data cleaning and engineering of the excel file for database setup
 
 #Importing essential libraries
-from werkzeug.security import generate_password_hash, check_password_hash
-from openpyxl import load_workbook
+from werkzeug.security import generate_password_hash
 from faker import Faker
 import pandas as pd
 import numpy as np
 import string
 import random
-import csv
-import os
 
 #Set Seed
 SEED_VAL = 55

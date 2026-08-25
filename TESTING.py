@@ -208,7 +208,7 @@ class TestApplicationLogic(unittest.TestCase):
         self.assertEqual(len(result), 5)
 
         #Assserting specific strings that were correctly appended to the list
-        self.assertIn("Increased fiber take: this can help manage blood glucose spikes and support insulin sensitivity.")
+        self.assertIn("Increased fibre take: this can help manage blood glucose spikes and support insulin sensitivity.")
         self.assertIn("Extra Zinc: this can help manage androgen related symptoms like acne or hair loss.")
 
         print("Test Passed: Elevated nutrition messages generated correctly.")

@@ -3,29 +3,17 @@
 #Importing Libraries
 from flask import Flask, render_template, request, redirect, url_for, flash, session, redirect
 import logging, re, os
-from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash 
 
 #Other python files
 from DATABASE_CREATION import init_db
 from RECOMMENDER_LOGIC import get_recommendations, nutrient_vector_2
 import json
-
 import sqlite3
-import csv
-import math
-import ast
 import random
 import os
-
-from openpyxl import load_workbook
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import string
 import random
-import csv
 
 #Set Seed
 SEED_VAL = 55
@@ -85,14 +73,14 @@ def generate_nutrition_message(patient_vector):
     #And if nutrients needs are elevated above the baseline
 
     #Listing the order of the vector
-    fiber, pufa, mag, vit_d, zinc = patient_vector
+    fibre, pufa, mag, vit_d, zinc = patient_vector
 
     #Initialising variable for the messages
     messages = []
 
     #Constraints for the messages if they are above the baseline level
-    if fiber > 25.0: 
-        messages.append("Increased fiber take: this can help manage blood glucose spikes and support insulin sensitivity.")
+    if fibre > 25.0: 
+        messages.append("Increased fibre take: this can help manage blood glucose spikes and support insulin sensitivity.")
     if pufa > 12.0:
         messages.append("Extra omega-3 and polyunsaturated fats: this can help reduce inflammation and lower lipid levels.")
     if mag > 320.0: 

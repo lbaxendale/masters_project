@@ -5,11 +5,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import itertools
 
-#--------------Catalog Coverage Quality Metric----------------
+#Setting seed for reproducibility
+np.random.seed(55)
+
+#--------------Catalogue Coverage Quality Metric----------------
 # Catalogue Coverage = (Counter of Unique Food Items Recommended / Total items in Catalogue) x 100
 
 #Creating a function to loop through all 468 patient records
-def food_catalog_coverage(patient_df, food_db, vector_function, recommender_function, food_scaled_db=None, scalerobj=None, top_n=10):
+def food_catalogue_coverage(patient_df, food_db, vector_function, recommender_function, food_scaled_db=None, scalerobj=None, top_n=10):
     #Calculating the percentage of unique foods used across the entire patient dataset
 
     #Parameters:
@@ -53,7 +56,7 @@ def food_catalog_coverage(patient_df, food_db, vector_function, recommender_func
     percentage_covered = (total_unique_foods_recommended / total_foods) * 100
 
     #Printing the metrics 
-    print("Food Recommender Catalog Coverage")
+    print("Food Recommender Catalogue Coverage")
     print(f"Total Unique Foods in Food Database: {total_foods}")
     print(f"Number of Unique Foods Recommended: {total_unique_foods_recommended}")
     print(f"Percentage of Unique Foods Recommended out of Total Foods: {percentage_covered:.2f}%")
@@ -72,7 +75,7 @@ def intra_list_diversity(patient_df, food_db, vector_function, recommender_funct
 
     #Retrieve order of nutrients
     nutrients_5d_order = [
-            'Fiber, total dietary', 
+            'Fibre, total dietary', 
             'Fatty acids, total polyunsaturated',
             'Magnesium, Mg',
             'Vitamin_D_Total_UG',
@@ -191,7 +194,7 @@ def inter_list_diversity(patient_df, food_db, vector_function, recommender_funct
 def nutrient_contribution_test(patient_df, food_db, vector_function, recommender_function, food_scaled_db=None, scalerobj=None, top_n=10):
     #Retrieve order of nutrients
     nutrients_5d_order = [
-            'Fiber, total dietary', 
+            'Fibre, total dietary', 
             'Fatty acids, total polyunsaturated',
             'Magnesium, Mg',
             'Vitamin_D_Total_UG',
@@ -200,7 +203,7 @@ def nutrient_contribution_test(patient_df, food_db, vector_function, recommender
 
     #Dictionaries to track the percentages across all patients
     nutrient_fulfillment = {
-        'Fiber': [],
+        'Fibre': [],
         'PUFAs': [],
         'Magnesium':[],
         'Vitamin D': [],

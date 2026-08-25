@@ -1,25 +1,11 @@
 # Database creation for application
 
 #Importing Libraries
-from flask import Flask, render_template, request, redirect, url_for, flash, session, redirect
-import logging, re, os
-from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash 
-import sqlite3
-import csv
-import math
-import ast
 import random
-import os
-
-from openpyxl import load_workbook
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import string
-import random
-import csv
+
+#Setting seed for reproducibility
+np.random.seed(55)
 
 from DATA_ENGINEERING import process_raw_file
 from RECOMMENDER_LOGIC import populate_db, save_food_to_db

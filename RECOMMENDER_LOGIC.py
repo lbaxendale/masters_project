@@ -1,27 +1,17 @@
 #Nutrition Recommender Code Logic for Application
 
 #Importing essential libraries
-from openpyxl import load_workbook
-from faker import Faker
 import pandas as pd
-import matplotlib.pyplot as plt
-from werkzeug.security import generate_password_hash, check_password_hash 
-import seaborn as sns
 import numpy as np
-
 import sqlite3
-import ast
 import json
-import os
 
 #Libraries for machine learning
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.multioutput import MultiOutputRegressor
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
+
+#Setting seed for reproducibility
+np.random.seed(55)
 
 # -------------------------------------------------------------------
 #Hashing the passwords in the csv file and populating it 
@@ -280,7 +270,7 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
 
     #Renaming the Raw DQL nutrient column names
     food_df = food_df.rename(columns={
-        "Fiber, total dietary": 'fiber_g',
+        "Fiber, total dietary": 'fibre_g',
         "Fatty acids, total polyunsaturated": 'pufa_g',
         "Magnesium, Mg": 'magnesium_mg',
         "Vitamin_D_Total_UG": 'vitamin_d_mcg',
@@ -328,16 +318,16 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
             filtered_food_db = filtered_food_db[mask]
 
     #Nutrient order
-    target_fiber = patient_vector[0]
+    target_fibre = patient_vector[0]
     target_pufa = patient_vector[1]
     target_magnesium = patient_vector[2]
     target_vit_d = patient_vector[3]
     target_zinc = patient_vector[4]
 
     #Elevated need for Fibre
-    if target_fiber > 25:
+    if target_fibre > 25:
         #Filtering out the foods that don't contain a lot of Fibre
-        filtered_food_db = filtered_food_db[filtered_food_db['fiber_g'] > 0.5]
+        filtered_food_db = filtered_food_db[filtered_food_db['fibre_g'] > 0.5]
 
     #Elevated need for PUFA
     if target_pufa > 12:
@@ -365,7 +355,7 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
 
     #Isolating the 5 nutrients in the vector
     #For scaling
-    nutrient_cols = ['fiber_g', 'pufa_g', 'magnesium_mg', 'vitamin_d_mcg', 'zinc_mg']
+    nutrient_cols = ['fibre_g', 'pufa_g', 'magnesium_mg', 'vitamin_d_mcg', 'zinc_mg']
     food_numeric_matrix = filtered_food_db[nutrient_cols].values
     
     #Mapping the nutrient values to the food matrix
