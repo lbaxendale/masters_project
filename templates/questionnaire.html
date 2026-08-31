@@ -93,7 +93,8 @@
             required
             value="{{ user.Weight_kg if user and user.Weight_kg != None else '' }}">
         </div>
-
+        
+        <!-- User diet options as radio buttons to only select one diet-->
         <div class="form-group"> 
           <label for="diet">What diet do you follow?</label>
           <select name ="diet" id="diet">
@@ -104,7 +105,8 @@
             <option value="halal_diet" {% if user and user.Diet == 'halal_diet' %}checked{% endif %}>Halal diet</option>
           </select>
         </div>
-
+        
+        <!-- User allergen options as check box options so users can select multiple allergens-->
         <div class="form-group"> 
           <label for="allergens">Do you have any allergies? Select multiple if applicable.</label>
           <div class="checkbox-grid">

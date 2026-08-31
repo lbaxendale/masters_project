@@ -1,36 +1,20 @@
--SEED IN OTHER FILES
--Check references for all sections
-
--FIBRE SPELLING.EASY
--CATALOGUE SPELLING.EASY
-
--cut results part
-
-
 --------------Report
--Line spacing
--references
--section summaries
+
 -Diagram labels? 
--References for METHODOLOGY, LIT REVIEW...
 -Table of Listings
--more words for Results (about 150)
+-Table of Figures
 
 -METHODOLOGY PART CUT WORD COUNT
 -LIT REVIEW CUT WORD COUNT
 -CUT IMPLEMENTATION, RESULTS
 
-REFERENCES---
-INTRO DONE
-LIT REVIEW DONE
-METHODOLOGY DONE
-IMP DONE
-RESULTS DONE
-DISCUSSION DONE
 
-nutrition table
-separation of concerns
-REFERENCING APPENDIX 1???
+DELETE BLANK PAGES
+
+FEM TECH - DISCUSSION - LIT REVIEW 
+
+IMAGE OF RECOMMENDATIONS
+
 
 
 TESTING USERS BELOW: 
@@ -105,3 +89,15 @@ Milk, Egg, Peanut, Soy, Wheat, Tree Nut, Shellfish, Fish Sesame
 #Extracting the list of allergens 
              allergens_list = request.form.getlist("allergens")
              allergens_string = ",".join(allergens_list) if allergens_list else ""
+
+WORD COUNT
+
+INTRO 619 - 605 no ref
+LIT REVIEW - 1365 words - around 1300
+meth - 1278 - around 1200
+IMP - 1017 - around 1000
+RESULTS - 1043 - around 100
+discuss - 1264 - 1200
+CONC - 441
+
+FIGURE, LISTING, TABLE

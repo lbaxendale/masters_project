@@ -70,7 +70,6 @@ def process_raw_file():
 
     #Recalculating LH to FSH Ratio column and HOMA IR column
     #For mathematical integrity
-
     #LH/FSH Ratio Formula
     df2['LH_FSH_Ratio'] = df2['LH_mIU_mL'] / df2['FSH_mIU_mL']
 

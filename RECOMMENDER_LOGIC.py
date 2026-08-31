@@ -116,7 +116,6 @@ def save_food_to_db(db_path="patientdb.db"):
     conn.close()
 
 #----------------CLINICAL DATA AND PROXIES NUTRIENT VECTOR LOGIC----------------------
-
 def nutrient_vector_2(patient_record):
 
     # Set a baseline daily reccomended intake of nutrients
@@ -238,6 +237,7 @@ def nutrient_vector_2(patient_record):
     #Round the nutrient figures
     return [round(fibre, 1), round(PUFA, 1), round(magnesium, 1), round(vitamin_d, 1), round(zinc, 1)]
 
+#----------------Logic to generate user recommendations----------------------
 def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     conn = sqlite3.connect(db_path)
 
@@ -379,8 +379,4 @@ def get_recommendations(user_email, db_path="patientdb.db", top_n=10):
     #Returning the top N items as a list of dictionaries for Jinja2 HTML rendering
     top_foods = results_df.sort_values(by='Match_Score', ascending=False).head(top_n)
     return top_foods.to_dict(orient='records')
-
-# Baseline food recommender for profile with lack of clincal data
-# Incase user opts out of entering the optional data
-# Recommendations with use baseline nutrient levels, BMI, Menstrual Cycle data & Physical symptoms
 
