@@ -1,5 +1,8 @@
 # COM7016 MSc Project Artefact: AI-Driven Personalised Nutrition Recommendations for Women’s Hormonal Health 
 
+### Lily Baxendale
+### Student Number: 2509923
+
 ## Project Overview
 The project successfully deployed a multi-modal, AI-driven nutrition recommender web application, directly both addressing the increased need for femtech and precision nutrition. By pivoting from traditional caloric-deficit models, the final artefact combines clinical markers, menstrual data, and physical symptoms to generate a highly personalised 5-dimensional micronutrient vector. Specific clinical complaints such as inflammation and symptoms of PMOS are successfully target with literature-backed, clinically relevant dietary advice.
 
@@ -100,7 +103,7 @@ The application was designed and prduced using the CRISP-DM lifecycle. The files
 ### Exploratory Data Analysis of The PCOS Dataset: 'EDA_ONLY.ipynb'
 This file cleans the data and creates boxplots and histograms to analyse the spread of the health data.
 
-### Food Data Analysis File: 'FOOD_ANALYSIS.ipynb'
+### Food Data Analysis File: 'food_analysis.ipynb'
 This file cleans and analyses the filtered USDA food dataset and examine the nutrients and categories of food. 
 NOTE: This file can only be run after running the 'WORKING_APP.py' file.
 
@@ -124,3 +127,15 @@ This file contains the code that attempts to use the machine learning algorithm 
 
 ### K-Means Clustering of PMOS Phenotypes File: 'K_MEANS_EXPERIMENTATION.ipynb'
 This file contains the code that attempts to use K-means clustering to group PMOS groups based on 4 Rotterdam PMOS phenotypes.
+
+### Food Datasets: 'food.csv', 'food_category.csv', 'food_nutrient.csv', 'nutrient.csv'
+These are the USDA food datasets used for the artefact. 
+
+### PCOS Dataset: 'PCOS Dataset.xlsx'
+The PCOS health data from real Phillipine female patients. 
+
+### Appendix 1 File
+This contains the screenshots of AI usage as part of the evidence for the Generative AI usage declaration.
+
+### Clean PCOS Datasets: 'clean_pcos_data.xlsx', 'clean_pcos_data.csv'
+These are the clean version of the original 'PCOS Dataset.xlsx' dataset without the fake generated login credentials. 
