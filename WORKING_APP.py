@@ -591,7 +591,7 @@ def questionnaire():
 
     #Retrieving first name from the session but default to user if missing
     user_first_name = session.get("first_name", "User")
-    return render_template('questionnaire.html', user_name=user_first_name, user=user_data)
+    return render_template('questionnaire.html', first_name=user_first_name, user=user_data)
 
 # Route for error handling 404 page 
 @app.errorhandler(404)

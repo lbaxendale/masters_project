@@ -247,7 +247,7 @@ body {
     text-align: center;
 }
 
-personalised-message ul {
+.personalised-messages ul {
     list-style-type: disc;
     padding-left: 20px;
 }
