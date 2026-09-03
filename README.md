@@ -2,6 +2,7 @@
 
 ### Lily Baxendale
 ### Student Number: 2509923
+### Github Repository Link: https://github.com/lbaxendale/masters_project
 
 ## Project Overview
 The project successfully deployed a multi-modal, AI-driven nutrition recommender web application, directly both addressing the increased need for femtech and precision nutrition. By pivoting from traditional caloric-deficit models, the final artefact combines clinical markers, menstrual data, and physical symptoms to generate a highly personalised 5-dimensional micronutrient vector. Specific clinical complaints such as inflammation and symptoms of PMOS are successfully target with literature-backed, clinically relevant dietary advice.

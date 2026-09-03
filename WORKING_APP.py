@@ -304,7 +304,12 @@ def view_recs():
         flash("Could not locate nutrient profile.")
         return redirect(url_for("dashboard"))
 
+    if user_row[0] is None:
+        flash("You need to complete the health questionnaire to generate recommendations.")
+        return redirect(url_for("questionnaire"))
+
     import json
+    #Only running json.loads if the string is valid
     patient_vector = json.loads(user_row[0])
 
     #Generating personalised nutrition message
@@ -586,7 +591,7 @@ def questionnaire():
 
     #Retrieving first name from the session but default to user if missing
     user_first_name = session.get("first_name", "User")
-    return render_template('questionnaire.html', first_name=user_first_name, user=user_data)
+    return render_template('questionnaire.html', user_name=user_first_name, user=user_data)
 
 # Route for error handling 404 page 
 @app.errorhandler(404)
