@@ -1,4 +1,4 @@
-# COM7016 MSc Project Artefact: AI-Driven Personalised Nutrition Recommender for Women's Hormonal Health and PMOS
+# COM7016 MSc Project Artefact: AI-Driven Personalised Nutrition Recommender for Women's Hormonal Health and Polyendocrine Metabolic Ovarian Syndrome (PMOS)
 
 ### Lily Baxendale
 ### Student Number: 2509923
