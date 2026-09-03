@@ -7,6 +7,7 @@ import numpy as np
 #Setting seed for reproducibility
 np.random.seed(55)
 
+#Calling in functions from other the other processing files 
 from DATA_ENGINEERING import process_raw_file
 from RECOMMENDER_LOGIC import populate_db, save_food_to_db
 

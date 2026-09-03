@@ -5,7 +5,8 @@ The project successfully deployed a multi-modal, AI-driven nutrition recommender
 
 ## Generative AI Statement
 The assignment used generative AI in the following ways for the purposes of the completing the assignment: editing.
-See screenshots of Generative AI usage in the file:
+Example of prompts used: How do I safely change the names of fiber to fibre in this code file?
+See screenshots of Generative AI usage in the file named Appendix 1. 
 
 ## System Functionality
 My web application is a nutrition recommender system prototype intended for used for use by users seeking personalised nutrition adivce for hormonal health. 
@@ -45,7 +46,7 @@ Before running the application, ensure the following software is installed along
 
 ### 2. Folder Structure & File Setup 
 For the application to work as intended set up the required project folder set up/hierarchy in the image below. This is so that Flask can locate the html templates and CSS files.
-![Folder Setup](image/folder_setup.png)
+![Folder Setup](./folder_setup.png)
 Note: The files .... are automatically created when the main application code in 'WORKING_APP.py' is run. However, I have also included a copy of those files in the repository to download and place in '/masters_project' folder as a safety fall back. Either methods will work.
 Download the 'WORKING_APP.py', xlsx, csv files, folder, html, css, png, jpeg, and all other files from the repository to place in the folder set up.
 

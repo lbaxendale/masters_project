@@ -67,6 +67,7 @@ PASSWORD_PATTERN = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{
 
 
 # ------------------------------------
+#Personalised nutrition messages 
 def generate_nutrition_message(patient_vector):
     #Analysing the patients target vector 
     #Generating a personalised explanation based on the results
